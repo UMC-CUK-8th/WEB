@@ -33,7 +33,6 @@ input {
 }
 
 button {
-    background-color: #4CAF50;
     color: white;
     border: none;
     padding: 10px 10px;
@@ -41,17 +40,16 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:not(.delete-btn) {
+    background-color: #4CAF50;
+}
+
+button:not(.delete-btn):hover {
     background-color: #45a049;
 }
 
 .delete-btn {
     background-color: red;
-    color: white;
-    border: none;
-    padding: 10px 10px;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 .delete-btn:hover {
