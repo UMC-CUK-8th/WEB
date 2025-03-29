@@ -1,8 +1,8 @@
 import './App.css';
-import Todo from './components/Todo';
+import ContextPage from './pages/contextPage';
 
 function App() {
-  return <Todo />;
+  return <ContextPage />;
 }
 
 export default App;
