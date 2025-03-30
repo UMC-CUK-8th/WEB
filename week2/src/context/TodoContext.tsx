@@ -12,6 +12,6 @@ export const TodoContext = createContext<TodoContextType | undefined>(undefined)
 
 export const useTodoContext = () => {
   const context = useContext(TodoContext);
-  if (!context) throw new Error('useTodoContext는 TodoContext.Provider 내부에서만 사용 가능 ㅜ.ㅜㅜ');
+  if (!context) throw new Error('useTodoContext는 TodoContext.Provider 내부에서만 사용 가능');
   return context;
 };
