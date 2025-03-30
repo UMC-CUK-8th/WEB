@@ -2,7 +2,7 @@
 name: UMC 스터디 issue template
 about: UMC 스터디 issue template
 title: "[FEAT] 주차 워크북"
-labels: documentation, enhancement
+labels: ":memo: docs, :sparkles: feature"
 assignees: seoyeoneel02
 
 ---
