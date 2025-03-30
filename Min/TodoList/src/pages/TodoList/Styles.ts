@@ -1,92 +1,73 @@
-export const classes = {
-  container: `
-    bg-white
-    rounded-[15px]
-    shadow-md
-    p-6
-    w-[500px]
-    text-center
-  `,
+import clsx from "clsx";
+import { useTheme, THEME } from "../../06-useContext/context/ThemeProvider";
 
-  title: `
-    text-[24px]
-    font-bold
-    mb-6
-  `,
+export const useThemeClasses = () => {
+  const { theme } = useTheme();
+  const isLightMode = theme === THEME.LIGHT;
 
-  inputContainer: `
-    flex
-    justify-between
-    items-center
-    mb-6
-  `,
+  return {
+    container: clsx(
+      `
+      rounded-[15px]
+      shadow-md
+      p-6
+      w-[500px]
+      text-center
+    `,
+      isLightMode ? 'bg-white' : 'bg-gray-800'
+    ),
 
-  input: `
-    flex-1
-    border
-    border-gray-300
-    rounded-md
-    px-4
-    py-2
-    mr-2
-    outline-none
-  `,
+    title: clsx(
+      'text-[24px] font-bold mb-6',
+      isLightMode ? 'text-black' : 'text-white'
+    ),
 
-  wrapper: `
-    flex
-    justify-between
-    gap-4
-  `,
+    inputContainer: 'flex justify-between items-center mb-6',
 
-  listContainer: `
-    flex-1
-  `,
+    input: clsx(
+      `
+      flex-1
+      border
+      rounded-md
+      px-4
+      py-2
+      mr-2
+      outline-none
+    `,
+      isLightMode
+        ? 'border-gray-300 bg-white text-black'
+        : 'border-gray-600 bg-gray-700 text-white'
+    ),
 
-  completedContainer: `
-    flex-1
-  `,
+    wrapper: 'flex justify-between gap-4',
 
-  titleSection: `
-    font-bold
-    text-lg
-    mb-3
-  `,
+    listContainer: 'flex-1',
 
-  itemContainer: `
-    bg-gray-100
-    rounded-md
-    p-3
-    mb-2
-    flex
-    items-center
-    justify-between
-  `,
+    completedContainer: 'flex-1',
 
-  itemText: `
-    text-left
-  `,
+    titleSection: clsx(
+      'font-bold text-lg mb-3',
+      isLightMode ? 'text-black' : 'text-white'
+    ),
 
-  addButton: `
-    bg-green-500
-    text-white
-    px-4
-    py-2
-    rounded-md
-  `,
+    itemContainer: clsx(
+      `
+      rounded-md
+      p-3
+      mb-2
+      flex
+      items-center
+      justify-between
+    `,
+      isLightMode ? 'bg-gray-100' : 'bg-gray-700'
+    ),
 
-  completeButton: `
-    bg-green-500
-    text-white
-    px-3
-    py-1
-    rounded-md
-  `,
+    itemText: isLightMode ? 'text-left text-black' : 'text-left text-white',
 
-  deleteButton: `
-    bg-red-500
-    text-white
-    px-3
-    py-1
-    rounded-md
-  `,
+    addButton: 'bg-green-500 text-white px-4 py-2 rounded-md',
+
+    completeButton: 'bg-green-500 text-white px-3 py-1 rounded-md',
+
+    deleteButton: 'bg-red-500 text-white px-3 py-1 rounded-md',
+  };
 };

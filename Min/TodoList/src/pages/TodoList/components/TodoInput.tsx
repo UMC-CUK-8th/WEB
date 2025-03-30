@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useTodo } from "../../../contexts/TodoContext";
-import { classes } from "../Styles";
+import { useThemeClasses } from "../Styles";
 
 const TodoInput: React.FC = () => {
   const [text, setText] = useState("");
   const { addTodo } = useTodo();
+  const classes = useThemeClasses();
 
   const handleAddTodo = () => {
     if (text.trim()) {

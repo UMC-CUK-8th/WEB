@@ -1,10 +1,11 @@
 import React from "react";
 import { useTodo } from "../../../contexts/TodoContext";
 import TodoItem from "./TodoItem";
-import { classes } from "../Styles";
+import { useThemeClasses } from "../Styles";
 
 const CompletedList: React.FC = () => {
   const { completedTodos, deleteTodo } = useTodo();
+  const classes = useThemeClasses();
 
   return (
     <div className={classes.completedContainer}>

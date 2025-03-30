@@ -1,5 +1,5 @@
 import React from "react";
-import { classes } from "../Styles"; 
+import { useThemeClasses } from "../Styles"; 
 
 interface TodoItemProps {
   text: string;
@@ -8,6 +8,8 @@ interface TodoItemProps {
 }
 
 const TodoItem: React.FC<TodoItemProps> = ({ text, onComplete, onDelete }) => {
+  const classes = useThemeClasses();
+
   return (
     <div className={classes.itemContainer}>
       <span className={classes.itemText}>{text}</span>
