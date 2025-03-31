@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"name": "UMC_8기",
+		"path": "../../.."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "UMC 1주차"
+  }
+}
