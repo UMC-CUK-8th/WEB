@@ -3,8 +3,17 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f4f4f4;
     margin: 0;
+}
+
+body.LIGHT {
+    background-color: #f4f4f4;
+    color: #000;
+}
+  
+body.DARK {
+    background-color: #111827; 
+    color: #fff;
 }
 
 .todo-container {
@@ -34,26 +43,31 @@ input {
 
 button {
     color: white;
+    background-color: orchid;
     border: none;
     padding: 10px 10px;
     border-radius: 5px;
     cursor: pointer;
 }
 
-button:not(.delete-btn) {
+.complete-btn {
     background-color: #4CAF50;
+    color: white;
 }
 
-button:not(.delete-btn):hover {
+.complete-btn:hover {
     background-color: #45a049;
+    color: white;
 }
 
 .delete-btn {
     background-color: red;
+    color: white;
 }
 
 .delete-btn:hover {
     background-color: darkred;
+    color: white;
 }
 
 .todo-lists {
@@ -75,12 +89,3 @@ ul {
     margin: 0;
 }
 
-li {
-    background: #f9f9f9;
-    padding: 5px;
-    margin-top: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 5px;
-}

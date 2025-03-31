@@ -45,7 +45,7 @@ function AppContent() {
       {/* 배경 전체 */}
       <div
         className={clsx(
-          'min-h-screen transition-colors duration-300 flex flex-col items-center py-10',
+          'min-h-screen transition-colors flex flex-col items-center py-10',
           isLightMode ? 'bg-gray-100 text-black' : 'bg-gray-900 text-white'
         )}
       >
@@ -53,7 +53,7 @@ function AppContent() {
         <div
           className={clsx(
             'w-full flex justify-end p-4',
-            isLightMode ? 'bg-white' : 'bg-gray-800'
+            isLightMode ? 'bg-gray-100' : 'bg-gray-900'
           )}
         >
           <ThemeToggleButton />
@@ -62,7 +62,7 @@ function AppContent() {
         {/* 투두 카드 */}
         <div
           className={clsx(
-            'rounded-[15px] shadow-md p-6 w-[500px] text-center mt-6 transition-all duration-300',
+            'rounded-[15px] shadow-md p-6 w-[500px] text-center mt-6 transition-all',
             isLightMode ? 'bg-white text-black' : 'bg-gray-800 text-white'
           )}
         >

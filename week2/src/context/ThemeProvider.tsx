@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useState, useContext } from "react";
+import { createContext, PropsWithChildren, useState, useContext, useEffect } from "react";
 
 export enum THEME {
     LIGHT = 'LIGHT',
@@ -22,6 +22,11 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
             prevTheme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT
         );
     };
+
+    useEffect(() => {
+        document.body.classList.remove('LIGHT', 'DARK');
+        document.body.classList.add(theme);
+    }, [theme]);
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
