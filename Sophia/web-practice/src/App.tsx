@@ -1,8 +1,12 @@
 import './App.css';
-import ContextPage from './pages/contextPage';
+import MoviePage from './pages/MoviePage/indext';
 
 function App() {
-  return <ContextPage />;
+  return (
+    <>
+      <MoviePage />
+    </>
+  );
 }
 
 export default App;
