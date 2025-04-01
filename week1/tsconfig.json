@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "es2016", // ECMAScript 2016으로 컴파일
     "module": "ES2015", // ES2015 모듈 시스템 사용
-    "rootDir": "./src", // 소스 파일의 루트 디렉토리
-    "outDir": "./dist", // 컴파일된 파일이 저장될 디렉토리
+    "rootDir": "week1/src", // 소스 파일의 루트 디렉토리
+    "outDir": "week1/dist", // 컴파일된 파일이 저장될 디렉토리
     "esModuleInterop": true, // ES 모듈 호환성 설정
     "forceConsistentCasingInFileNames": true, // 파일 이름의 대소문자 일관성 강제
     "strict": true, // 엄격한 타입 검사
