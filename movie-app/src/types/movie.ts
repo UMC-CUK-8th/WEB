@@ -13,11 +13,14 @@ export type Movie = {
     video: boolean;
     vote_average: number;
     vote_count: number;
-  };
+    runtime?: number;
+    genres?: { id: number; name: string }[];
+    production_countries?: { iso_3166_1: string; name: string }[];
+};
   
-  export type MovieResponse = {
+export type MovieResponse = {
     page: number;
     results: Movie[]; 
     total_pages: number;
     total_results: number;
-  };
+};

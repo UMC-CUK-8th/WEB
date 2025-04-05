@@ -9,6 +9,7 @@ import TopRatedMoviesPage from './pages/top-rated';
 import UpComingMoviesPage from './pages/upcoming';
 import NotFound from './pages/not-found';
 import RootLayout from './layout/root-layout';
+import MovieDetailPage from './pages/movieDetail';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: 'upcoming',
         element: <UpComingMoviesPage/>
+      },
+      {
+        path: 'movies/:movieId',
+        element: <MovieDetailPage/>
       },
     ]
   },
