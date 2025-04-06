@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Movie } from "../types/movie";
+import { useNavigate } from "react-router-dom";
 
 interface MovieCardProps {
     movie: Movie;
@@ -7,9 +8,12 @@ interface MovieCardProps {
 
 export default function MovieCard({movie}: MovieCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
   
   return (
     <div 
+        // onClick={() => (window.location.href = `/movies/now_playing/${movie.id}`)}
+        onClick={() => navigate(`/movies/${movie.id}`)}
         className='relative rounded-xl shadow-lg overflow-hidden cursor-pointer
         w-44 transition-transform duration-500 hover:scale-105' // absolute는 나를 따라와. transition으로 영화 목록 눌렀을 때 살짝 커지는 효과 적용.
         onMouseEnter={() => setIsHovered(true)}
