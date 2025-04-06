@@ -13,6 +13,8 @@ export type Movie = {
     video: boolean;
     vote_average: number;
     vote_count: number;
+    runtime: number;
+    tagline: string;
   };
   
   export type MovieResponse = {
