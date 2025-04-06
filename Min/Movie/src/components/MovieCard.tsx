@@ -13,7 +13,7 @@ export default function MovieCard({movie}: MovieCardProps) {
   return (
     <div 
         // onClick={() => (window.location.href = `/movies/now_playing/${movie.id}`)}
-        onClick={() => navigate(`/movies/${movie.id}`)}
+        onClick={() => navigate(`/movies-detail/${movie.id}`)}
         className='relative rounded-xl shadow-lg overflow-hidden cursor-pointer
         w-44 transition-transform duration-500 hover:scale-105' // absolute는 나를 따라와. transition으로 영화 목록 눌렀을 때 살짝 커지는 효과 적용.
         onMouseEnter={() => setIsHovered(true)}

@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         element: <MoviePage />,
       },
       {
-        path: 'movies/:movieId',
+        path: 'movies-detail/:movieId',
         element: <MovieDetailPage />
       }
     ],
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className='bg-black'>
+    <div className='bg-black min-h-screen'>
       <RouterProvider router={router} />
     </div>
   );
