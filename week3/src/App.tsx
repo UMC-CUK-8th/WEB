@@ -4,6 +4,7 @@ import HomePage from "./pages/home.tsx";
 import NotFound from "./pages/not-found.tsx";
 import Movies from "./pages/movies.tsx";
 import RootLayout from "./layout/root-layout.tsx";
+import MovieDetailPage from "./pages/MovieDetailPage";
 
 const router = createBrowserRouter([
     {
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
             },
             {
                 // 3. 부모의 path가 '/'이니, /를 붙이지 않아도 /movies랑 동일하게 동작한다.
-                path: 'movies',
+                path: 'movies/:category',
                 element: <Movies/>
+            },
+            {
+              path:'movies/:movieId',
+              element:<MovieDetailPage/>,
             }
         ]
     },
@@ -28,12 +33,7 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-    // return <RouterProvider router={router}/>
-    return (
-        <>
-            <Movies/>
-        </>
-    );
+    return <RouterProvider router={router}/>
 }
 
 export default App
