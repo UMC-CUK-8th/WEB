@@ -60,16 +60,16 @@ export default function MoviePage() {
     <>
       <div className='flex items-center justify-center gap-6 mt-5'>
         <button
-          className='bg-[#dda5e3] text-white px-6 py-3 rounded-lg shadow-md
-          hover:bg-[#b2dab1] transition-all duration-200 disabled:bg-gray-300
-          cursor-pointer disabled:cursor-not-allowed' // 페이지가 1일 때 눌리지 않도록 disabled로 따로 스타일 적용해줌. 
+          className='bg-violet-600 text-white px-6 py-3 rounded-lg shadow-md
+          hover:bg-violet-500 transition-all duration-200 disabled:bg-gray-600
+          cursor-pointer disabled:cursor-not-allowed'// 페이지가 1일 때 눌리지 않도록 disabled로 따로 스타일 적용해줌. 
           disabled={page === 1} 
           onClick={() => setPage((prev) => prev - 1)}
           > {`<`} </button>
-        <span>{page} 페이지</span>
+        <span className="text-white text-lg font-semibold">{page} 페이지</span>
         <button
-          className='bg-[#dda5e3] text-white px-6 py-3 rounded-lg shadow-md
-          hover:bg-[#b2dab1] transition-all duration-200 cursor-pointer' // 여기서는 cursor-pointer 효과를 줌.
+          className='bg-violet-600 text-white px-6 py-3 rounded-lg shadow-md
+          hover:bg-violet-500 transition-all duration-200 cursor-pointer' // 여기서는 cursor-pointer 효과를 줌.
           onClick={() => setPage((prev) => prev + 1)}> 
           {`>`} 
         </button>

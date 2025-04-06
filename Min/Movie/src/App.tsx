@@ -39,7 +39,11 @@ const router = createBrowserRouter([
 // movies/category/{movie_id}
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <div className='bg-black'>
+      <RouterProvider router={router} />
+    </div>
+  );
     // <>
     //   {/* <UseEffectPage /> */}
     //   {/* <UseEffectCounterPage /> */}
