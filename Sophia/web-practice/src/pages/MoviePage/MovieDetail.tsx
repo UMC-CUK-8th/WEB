@@ -1,69 +1,31 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Cast, Credit, MovieDetailResponse } from '../../types/movie';
+import { Credit, MovieDetailResponse } from '../../types/movie';
 import LoadingSpinner from '../../components/Movie/LoadingSpinner';
 import CreditCard from '../../components/Movie/CreditCard';
+import useFetch from '../../hooks/useFetch';
 
 export default function MovieDetail() {
   const { movieId } = useParams();
-  const [movieDetail, setMovieDetail] = useState<MovieDetailResponse>();
-  const [credits, setCredits] = useState<Cast[]>([]);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const fetchMovieDetail = async () => {
-      setIsPending(true);
-      try {
-        const { data } = await axios.get<MovieDetailResponse>(`https://api.themoviedb.org/3/movie/${movieId}?language=en-US`, {
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-          },
-        });
+  const movieDetailUrl = `https://api.themoviedb.org/3/movie/${movieId}`;
+  const movieCreditUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits`;
 
-        setMovieDetail(data);
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
+  const { data: movieDetail, isPending: isDetailPending, isError: isDetailError } = useFetch<MovieDetailResponse>(movieDetailUrl, 'ko-KR');
+  const { data: credits, isPending: isCreditPending, isError: isCreditError } = useFetch<Credit>(movieCreditUrl, 'ko-KR');
 
-    const fetchMovieCredit = async () => {
-      setIsPending(true);
-      try {
-        const { data } = await axios.get<Credit>(`https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`, {
-          headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-          },
-        });
-
-        setCredits(data.cast);
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
-
-    fetchMovieDetail();
-    fetchMovieCredit();
-  }, [movieId]);
-
-  if (isError) {
+  if (isDetailError || isCreditError) {
     <div className='text-red-500 text-2xl flex items-center justify-center h-dvh'>에러가 발생했습니다..😢</div>;
   }
 
   return (
     <>
-      {isPending && (
-        <div className='felx items-center justify-center h-dvh'>
+      {(isDetailPending || isCreditPending) && (
+        <div className='flex items-center justify-center h-dvh'>
           <LoadingSpinner />
         </div>
       )}
 
-      {!isPending && (
+      {!isDetailPending && !isCreditPending && (
         <div className='bg-black'>
           <section className='relative overflow-hidden p-4'>
             <img src={`https://image.tmdb.org/t/p/original/${movieDetail?.backdrop_path}`} alt={movieDetail?.title} className='w-full h-80 object-cover rounded-xl' />
@@ -79,7 +41,7 @@ export default function MovieDetail() {
           <section>
             <h2 className='font-semibold text-xl text-white p-4'>감독/출연</h2>
             <div className='grid gap-4 grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 justify-items-center'>
-              {credits.map((credit) => (
+              {credits?.cast.map((credit) => (
                 <CreditCard image={credit.profile_path} character={credit.character} name={credit.name} key={credit.credit_id} />
               ))}
             </div>
