@@ -1,23 +1,28 @@
 import './App.css';
-import HomePage from './pages/MoviePage/HomePage';
-import MoviePage from './pages/MoviePage/indext';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import NotFountPage from './pages/MoviePage/NotFountPage';
-import MovieDetail from './pages/MoviePage/MovieDetail';
+import NotFoundPage from './pages/site/NotFoundPage';
+import LoginPage from './pages/site/LoginPage';
+import HomePage from './pages/site/HomePage';
+import HomeLayout from './layouts/HomeLayout';
+import SignupPage from './pages/site/SignupPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
-    errorElement: <NotFountPage />,
+    element: <HomeLayout />,
+    errorElement: <NotFoundPage />,
     children: [
       {
-        path: 'movies/:category',
-        element: <MoviePage />,
+        index: true,
+        element: <HomePage />,
       },
       {
-        path: 'movie/:movieId',
-        element: <MovieDetail />,
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />,
       },
     ],
   },
