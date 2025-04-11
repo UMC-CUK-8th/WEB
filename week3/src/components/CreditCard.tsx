@@ -1,4 +1,5 @@
 import { Cast } from '../types/credits';
+import defaultImage from '../assets/defaultProfile.svg';
 
 interface CreditCardProps {
   Credit: Cast;
@@ -7,7 +8,7 @@ interface CreditCardProps {
 export default function CreditCard({ Credit }: CreditCardProps) {
   const imageUrl = Credit.profile_path
     ? `https://image.tmdb.org/t/p/w200${Credit.profile_path}`
-    : 'https://via.placeholder.com/100x100?text=No+Image';
+    : defaultImage;
 
   return (
     <div className="flex flex-col items-center p-4">

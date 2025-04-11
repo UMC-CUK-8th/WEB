@@ -5,6 +5,9 @@ import LoadingSpinner  from "../components/LoadingSpinner";
 import { Cast, CreditsResponse } from "../types/credits";
 import { Movie } from "../types/movie";
 import CreditCard from "../components/CreditCard";
+import Star from "../components/Star";
+import TrailerButton from "../components/TrailerButton";
+
 
 const MovieDetailPage = () => {
   const { movieId } = useParams();
@@ -57,7 +60,7 @@ const MovieDetailPage = () => {
       </div>
     );
   }
-
+ 
   return (
     <>
       {isPending ? (
@@ -72,12 +75,16 @@ const MovieDetailPage = () => {
               backgroundImage: `linear-gradient(to right, rgba(0,0,0,1) 15%, rgba(0,0,0,0)), url(https://image.tmdb.org/t/p/original${movieDetail?.backdrop_path})`,
             }}
           >
-            <h1 className="text-4xl font-bold mb-3">{movieDetail?.title}</h1>
+            <h1 className="text-4xl font-bold mb-3 flex items-center justify-between">{movieDetail?.title}
+            <TrailerButton movieId={movieId!} />
+
+            </h1> 
             <h6>평균 {movieDetail?.vote_average}</h6>
+            <Star w={'w-8'} h={'h-8'} readonly rate={movieDetail?.vote_average} />
             <h6>{movieDetail?.release_date}</h6>
             <h6>{movieDetail?.runtime}분</h6>
             <h1 className="text-2xl italic mt-3">{movieDetail?.tagline}</h1>
-            <p className="w-150 mt-5">{movieDetail?.overview}</p>
+            <p className="w-300 mt-5">{movieDetail?.overview}</p>
           </div>
           <h1 className="text-4xl font-bold mb-4 pt-7">감독/출연</h1>
           <div className="flex flex-wrap gap-4 py-4 justify-start">
