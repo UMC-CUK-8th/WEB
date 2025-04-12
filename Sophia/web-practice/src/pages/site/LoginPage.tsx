@@ -29,6 +29,8 @@ export default function LoginPage() {
     try {
       const response = await postSignin(values);
       setItem(response.data.accessToken);
+      alert('로그인 성공!');
+      navigate('/');
     } catch (error) {
       alert(error);
     }
