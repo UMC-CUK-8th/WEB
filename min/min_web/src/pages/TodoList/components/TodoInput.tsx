@@ -22,7 +22,7 @@ const TodoInput: React.FC<TodoInputProps> = ({ onAddTodo }) => {
         placeholder="할 일 입력"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onKeyPress={(e) => e.key === "Enter" && handleAddTodo()}
+        onKeyUp={(e) => e.key === "Enter" && handleAddTodo()}
       />
       <S.AddButton onClick={handleAddTodo}>할 일 추가</S.AddButton>
     </S.InputContainer>

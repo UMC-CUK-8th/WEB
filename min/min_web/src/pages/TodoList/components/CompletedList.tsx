@@ -1,6 +1,6 @@
 import React from "react";
 import TodoItem from "./TodoItem";
-import * as S from "../Styles"
+import * as S from "../Styles";
 
 interface CompletedListProps {
   completedTodos: string[];
