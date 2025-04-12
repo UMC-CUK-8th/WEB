@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import useForm from '../../hooks/useForm';
 import { UserSigninInformation, validateSignin } from '../../utils/validate';
+import { postSignin } from '../../apis/auth';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { LOCAL_STORAGE_KEY } from '../../constants/key';
 
 export default function LoginPage() {
   const { values, errors, touched, getInputProps } = useForm<UserSigninInformation>({
@@ -13,24 +16,32 @@ export default function LoginPage() {
   });
 
   const navigate = useNavigate();
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(values);
+
+    try {
+      const response = await postSignin(values);
+      setItem(response.data.accessToken);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   // 에러가 있거나 입력값이 비어있을 경우 버튼의 isDisabled === true
-  const isDisabled = Object.values(errors || {}).some((error) => error.length > 0) || Object.values(values).some((value) => value === '');
+  const isDisabled = Object.values(errors || {}).some((error) => error?.length > 0) || Object.values(values).some((value) => value === '');
 
   return (
     // 화면 전체에서 중앙 배치
-    <div className='flex flex-col items-center justify-center h-full gap-4 '>
+    <div className='flex flex-col items-center justify-center h-full gap-4'>
       <header className='text-white flex font-semibold text-xl py-4 relative'>
-        <button type='button' className='absolute -left-24' onClick={handleBack}>{`<`}</button>
+        <button type='button' className='absolute -left-24 cursor-pointer' onClick={handleBack}>{`<`}</button>
         <h2>로그인</h2>
       </header>
       <form className='flex flex-col gap-3' onSubmit={handleSubmit}>
