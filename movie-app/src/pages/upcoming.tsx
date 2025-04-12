@@ -1,43 +1,12 @@
-import { useEffect, useState } from "react";
-import { Movie, MovieResponse } from "../types/movie";
-import axios from "axios";
+import { useState } from "react";
+import { useFetchMovies } from "../hooks/useFetchMovies";
 import LoadingSpinner from "../components/loading";
 import Pagination from "../components/pagination";
 import MovieCard from "../components/movieCard";
 
 const UpComingMoviesPage = () => {
-    const [movies, setMovies] = useState<Movie[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [page, setPage] = useState(1);
-
-    const API_URL = import.meta.env.VITE_TMDB_MOVIE_API_URL;
-    const ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-
-    useEffect(() => {
-        const fetchMovies = async () => {
-            try {
-                const { data } = await axios.get<MovieResponse>(
-                    `${API_URL}/movie/upcoming?language=ko-KR&page=${page}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${ACCESS_TOKEN}`,
-                        },
-                    }
-                );
-
-                setTimeout(() => {
-                    setMovies(data.results);
-                    setLoading(false);
-                }, 300);
-            } catch (error) {
-                setError(true);
-                setLoading(false);
-            }
-        };
-
-        fetchMovies();
-    }, [page]);
+    const { movies, loading, error } = useFetchMovies("/movie/upcoming", page);
 
     if (loading) {
         return (

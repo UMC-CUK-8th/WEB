@@ -1,86 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { Movie } from "../types/movie";
+import { useMovieDetail } from "../hooks/useMovieDetail";
 import LoadingSpinner from "../components/loading";
 import defaultImage from "../assets/icon/defaultImage.png";
 import StarRating from "../components/starRating";
 import Trailer from "../components/trailer";
 
-type Cast = {
-    id: number;
-    name: string;
-    profile_path: string | null;
-    character?: string;
-    job?: string;
-};
-
 const MovieDetailPage = () => {
     const { movieId } = useParams();
-    const [movie, setMovie] = useState<Movie | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const [cast, setCast] = useState<Cast[]>([]);
-    const [videoKey, setVideoKey] = useState<string | null>(null);
+    const { movie, cast, videoKey, loading, error } = useMovieDetail(movieId);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const API_URL = import.meta.env.VITE_TMDB_MOVIE_API_URL;
-    const ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
     const openTrailer = () => {
         if (videoKey) {
             setIsModalOpen(true);
         }
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-        try {
-            setLoading(true);
-            setError(false);
-
-            const movieRes = await axios.get<Movie>(
-                `${API_URL}/movie/${movieId}?language=ko-KR`,
-                {
-                headers: {
-                    Authorization: `Bearer ${ACCESS_TOKEN}`,
-                },
-                }
-            );
-    
-            const creditRes = await axios.get<{ cast: Cast[]; crew: Cast[] }>(
-                `${API_URL}/movie/${movieId}/credits?language=ko-KR`,
-                {
-                headers: {
-                    Authorization: `Bearer ${ACCESS_TOKEN}`,
-                },
-                }
-            );
-
-            const videoRes = await axios.get(`${API_URL}/movie/${movieId}/videos?language=ko-KR`, {
-                headers: {
-                  Authorization: `Bearer ${ACCESS_TOKEN}`,
-                },
-            });
-            const trailer = videoRes.data.results.find(
-                (v: any) => v.type === "Trailer" && v.site === "YouTube"
-            );
-            setVideoKey(trailer?.key || null);
-            
-            const directors = creditRes.data.crew.filter((person) => person.job === "Director");
-            const actors = creditRes.data.cast.slice(0, 10); // 상위 10명만
-    
-            setMovie(movieRes.data);
-            setCast([...directors, ...actors]);
-            } catch (e) {
-            setError(true);
-            } finally {
-            setLoading(false);
-            }
-        };
-    
-        fetchData();
-    }, [movieId]);
 
     if (loading) {
         return (
@@ -118,26 +53,26 @@ const MovieDetailPage = () => {
                             </button>
                         )}
                     </h1>
-                    <p className="text-sm text-gray-700 mb-1 flex items-center gap-2">
+                    <div className="text-sm text-gray-700 mb-1 flex items-center gap-2">
                         <span className="font-semibold">평점 |</span>
                         <StarRating rating={movie.vote_average} />
-                    </p>
-                    <p className="text-sm text-gray-700 mb-1">
+                    </div>
+                    <div className="text-sm text-gray-700 mb-1">
                         <span className="font-semibold">개봉일 |</span> {movie.release_date}
-                    </p>
-                    <p className="text-sm text-gray-700 mb-1">
+                    </div>
+                    <div className="text-sm text-gray-700 mb-1">
                         <span className="font-semibold">장르 |</span>{" "}
                         {movie.genres?.map((genre) => genre.name).join(", ") || "정보 없음"}
-                    </p>
-                    <p className="text-sm text-gray-700 mb-1">
+                    </div>
+                    <div className="text-sm text-gray-700 mb-1">
                         <span className="font-semibold">제작 국가 |</span>{" "}
                         {movie.production_countries?.map((c) => c.name).join(", ") || "정보 없음"}
-                    </p>
-                    <p className="text-sm text-gray-700 mb-4">
+                    </div>
+                    <div className="text-sm text-gray-700 mb-4">
                         <span className="font-semibold">런타임 |</span>{" "}
                         {movie.runtime ? `${movie.runtime}분` : "정보 없음"}
-                    </p>
-                    <p className="mt-2 text-sm text-gray-800 leading-relaxed">{movie.overview}</p>
+                    </div>
+                    <div className="mt-2 text-sm text-gray-800 leading-relaxed">{movie.overview}</div>
                 </div>
             </div>
             <div className="max-w-5xl mx-auto">
