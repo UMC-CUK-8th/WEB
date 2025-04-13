@@ -1,41 +1,15 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { MovieDetailWithCredits } from "../types/detail";
 import MovieHero from "../components/MovieHero.tsx";
 import MovieCredits from "../components/MovieCredits.tsx";
+import useCustomFetch from "../hooks/useCustomFetch.ts";
 
 const MovieDetailPage = () => {
-  const { movieId } = useParams<{ movieId: string }>();
-  const [movie, setMovie] = useState<MovieDetailWithCredits | null>(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const fetchMovieDetail = async () => {
-      setIsPending(true);
-      try {
-        const { data } = await axios.get<MovieDetailWithCredits>(
-          `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR&append_to_response=credits`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-            },
-          }
-        );
-        setMovie(data);
-      } catch {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
-
-    if (movieId) {
-      fetchMovieDetail();
-    }
-  }, [movieId]);
+  const params = useParams();
+  const url = `https://api.themoviedb.org/3/movie/${params.movieId}?append_to_response=credits`;
+  
+  const { isPending, isError, data: movie } = useCustomFetch<MovieDetailWithCredits>(url, 'ko-KR');
 
   if (isPending) {
     return (
