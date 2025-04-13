@@ -3,6 +3,8 @@ import './App.css';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 import HomePage from './pages/home';
+import SignUpPage from './pages/signup';
+import LoginPage from './pages/login';
 import PopularMoviesPage from './pages/popular';
 import NowPlayingMoviesPage from './pages/now-playing';
 import TopRatedMoviesPage from './pages/top-rated';
@@ -10,6 +12,7 @@ import UpComingMoviesPage from './pages/upcoming';
 import NotFound from './pages/not-found';
 import RootLayout from './layout/root-layout';
 import MovieDetailPage from './pages/movieDetail';
+import OauthCallbackPage from './pages/oauthCallback';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +39,18 @@ const router = createBrowserRouter([
       {
         path: 'upcoming',
         element: <UpComingMoviesPage/>
+      },
+      {
+        path: 'signup',
+        element: <SignUpPage/>
+      },
+      {
+        path: 'oauth/callback',
+        element: <OauthCallbackPage/>
+      },
+      {
+        path: 'login',
+        element: <LoginPage/>
       },
       {
         path: 'movies/:movieId',
