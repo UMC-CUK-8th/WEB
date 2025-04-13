@@ -32,7 +32,7 @@ const LoginPage = () => {
             console.log("로그인 성공:", data);
             localStorage.setItem("accessToken", data.accessToken);
             alert("로그인에 성공했습니다!");
-            navigate("/home");
+            navigate("/");
         })
         .catch((err) => {
             alert(err.response?.data?.message || "로그인에 실패했습니다");
