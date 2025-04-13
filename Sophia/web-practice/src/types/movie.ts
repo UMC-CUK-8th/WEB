@@ -97,3 +97,21 @@ type Crew = {
   department: string;
   job: string;
 };
+
+export type MovieVideoResponse = {
+  id: number;
+  results: MovieVideos[];
+};
+
+export type MovieVideos = {
+  iso_639_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: boolean;
+  published_at: string;
+  id: string;
+  iso_3166_1: string;
+};
