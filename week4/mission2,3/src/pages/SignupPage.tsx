@@ -4,10 +4,6 @@ import { z } from "zod";
 import { postSignup } from "../apis/auth";
 import { useNavigate } from "react-router-dom";
 
-const emailSchema = z.object({
-  email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." })
-});
-
 const schema = z.object({
   email: z.string().email({message: "올바른 이메일 형식이 아닙니다." }),
 
@@ -19,7 +15,7 @@ const schema = z.object({
   .min(8, { message: "비밀번호는 8자 이상이어야 합니다." })
   .max(20, { message: "비밀번호는 20자 이하여야 합니다." }),
 
-  nickname: z.string()
+  name: z.string()
   .min(1, { message: "닉네임을 입력해주세요." }),
 })
 .refine((data) => data.password === data.passwordCheck, {
@@ -27,7 +23,6 @@ const schema = z.object({
   path: ["passwordCheck"],
 });
 
-type EmailField = z.infer<typeof emailSchema>;
 type FormFields = z.infer<typeof schema>;
 
 const SignupPage = () => {
@@ -39,7 +34,7 @@ const SignupPage = () => {
     formState: { errors, isSubmitting},
   } = useForm<FormFields>({
     defaultValues: {
-      nickname: "",
+      name: "",
       email: "",
       password: "",
       passwordCheck: "",
@@ -109,14 +104,14 @@ const SignupPage = () => {
         
 
         <input
-        {...register("nickname")}
+        {...register("name")}
         className={`border border-gray-300 w-[300px] rounded-md p-2
             ${errors?.password ? "border-red-500 bg-red-200" : "border-gray-300"}`}
-        type="nickname"
+        type="name"
         placeholder="닉네임"
         />
-        {errors?.nickname && (
-          <div className="text-red-500 text-sm">{errors.nickname.message}</div>
+        {errors?.name && (
+          <div className="text-red-500 text-sm">{errors.name.message}</div>
         )}
 
         <button 
