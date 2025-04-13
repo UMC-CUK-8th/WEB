@@ -5,6 +5,7 @@ import Loginpage from './pages/Loginpage';
 import HomeLayout from './layouts/HomeLayout';
 import HomePage from './pages/HomePage';
 import SignupPage from './pages/SignupPage';
+import MyPage from './pages/MyPage';
 
 const router = createBrowserRouter([
   {
@@ -14,14 +15,17 @@ const router = createBrowserRouter([
     children: [
       {index: true, element: <HomePage />},
       {path: 'login', element: <Loginpage /> },
-      {path: 'signup', element: <SignupPage /> }
+      {path: 'signup', element: <SignupPage /> },
+      {path: 'my', element: <MyPage /> },
     ],
   },
 ])
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <div className="bg-black text-white h-screen">
+      <RouterProvider router={router} />
+    </div>
   )
 }
 
