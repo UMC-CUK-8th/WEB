@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { UserSigninInformation, validateSignin } from '../utils/validate';
 import BeforeIcon from '../assets/Before.svg';
 import Google from '../assets/Google.svg';
+import { postSignin } from '../apis/auth';
+import {useLocalStorage} from '../hooks/useLocalStorage';
+import {LOCAL_STORAGE_KEY} from '../constants/key';
+
 const LoginPage = () => {
+  const {setItem} = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const navigate = useNavigate();
   const {values, errors, touched, getInputProps} = useForm<UserSigninInformation>({
     initialValue: {
@@ -12,9 +17,18 @@ const LoginPage = () => {
     },
     validate: validateSignin,
   });
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log( values);
-    navigate("/");
+    try{
+      const response = await postSignin(values);
+      setItem(response.data.accessToken);
+      console.log(response);
+      navigate("/");
+    }catch (error) {
+      alert(error);
+    }
+    
+    
   };
 
   // 오류가 하나라도 있거나, 입력값이 비어있으면 버튼 비활성화
@@ -41,7 +55,7 @@ const LoginPage = () => {
         {...getInputProps("email")}
         name="email"
         className={`border w-[300px] p-[10px] focus:border-[#807bff] rounded-sm text-white
-          ${errors?.email && touched?.email ? "border-red-500 bg-red-200" : "border-[#ccc]"}`} 
+          ${errors?.email && touched?.email ? "border-red-500" : "border-[#ccc]"}`} 
         type={"email"}
         placeholder={"이메일을 입력해주세요!"}
         />
@@ -57,7 +71,7 @@ const LoginPage = () => {
         />
         {errors?.password && touched?.password && ( <div className="text-red-500 text-sm">{errors.password}</div>
         )}
-        <button type="button" onClick={handleSubmit} disabled={isDisabled} className="w-full bg-[#D0C1FF] text-black py-3 rounded-md text-lg font-bold hover:bg-[#3f397c] transition-colors cursor-pointer disabled:bg-gray-300 disabled:text-white ">로그인</button>
+        <button type="button" onClick={handleSubmit} disabled={isDisabled} className="w-full bg-[#D0C1FF] text-black py-3 rounded-md text-lg font-bold hover:bg-[#3f397c] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white ">로그인</button>
       </div>
     </div>
   );
