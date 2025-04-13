@@ -46,6 +46,7 @@ const SignupPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
+    shouldUnregister: false, 
   });
 
   const onSubmit = async (data: FormData) => {
