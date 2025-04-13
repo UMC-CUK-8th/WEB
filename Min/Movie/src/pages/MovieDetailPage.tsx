@@ -7,7 +7,7 @@ import useCustomFetch from "../hooks/useCustomFetch.ts";
 
 const MovieDetailPage = () => {
   const params = useParams();
-  const url = `https://api.themoviedb.org/3/movie/${params.movieId}?append_to_response=credits`;
+  const url = `https://api.themoviedb.org/3/movie/${params.movieId}?append_to_response=credits,videos`;
   
   const { isPending, isError, data: movie } = useCustomFetch<MovieDetailWithCredits>(url, 'ko-KR');
 
