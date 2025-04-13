@@ -14,7 +14,7 @@ const Todo: React.FC = () => {
 
   const completeTodo = (index: number) => {
     const newTodos = [...todos];
-    const completedTask = newTodos.splice(index, 1)[0] ?? ""; 
+    const completedTask = newTodos.splice(index, 1)[0] ?? ""; // 기본값 설정
     setTodos(newTodos);
     setCompletedTodos([...completedTodos, completedTask]);
   };

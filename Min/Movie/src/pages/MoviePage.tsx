@@ -1,21 +1,52 @@
-import { useState } from "react"
-import { MovieResponse } from "../types/movie";
+import { useEffect, useState } from "react"
+import axios from "axios";
+import { Movie, MovieResponse } from "../types/movie";
 import MovieCard from "../components/MovieCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { useParams } from "react-router-dom";
-import useCustomFetch from "../hooks/useCustomFetch";
 
 export default function MoviePage() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  
+  // 1. 로딩 상태
+  const [isPending, setIsPending] = useState(false);
+  // 2. 에러 상태
+  const [isError, setIsError] = useState(false);
+  // 3. 페이지 
   const [page, setPage] = useState(1);
+
   const {category} = useParams<{
     category: string;
   }>();
 
-  const url = `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=${page}`;
+  useEffect(() => {
+    const fetchMovies = async () => {
+      setIsPending(true);
 
-  const { data: movies, isPending, isError } = useCustomFetch<MovieResponse>(url, 'ko-KR');
+      try {
+        const {data} = await axios.get<MovieResponse>(
+          `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=${page}`,
+          {
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+            }
+          }
+        );
 
-  console.log(movies);
+        setMovies(data.results);
+      } catch {
+        setIsError(true);
+      } finally {
+        setIsPending(false);
+      }
+    };
+    
+    fetchMovies();
+  }, [page, category]);
+
+  // if (!isPending) {
+  //   return <LoadingSpinner />;
+  // }
 
   if (isError) {
     return (
@@ -37,7 +68,7 @@ export default function MoviePage() {
         <div className='p-10 grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4
           lg:grid-cols-5 xl:grid-cols-6'> 
           {/* 실제 화면에 따라 달라지도록 세팅. 반응형 확인 가능. 패딩 10, gap 2*/}
-            {movies?.results.map((movie) => 
+            {movies && movies.map((movie) => 
               <MovieCard key={movie.id} movie={movie}/>
             )}
         </div>

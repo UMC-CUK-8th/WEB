@@ -7,6 +7,7 @@ type Props = {
 const MovieHero = ({ movie }: Props) => {
   return (
     <div className="relative w-full h-[600px] overflow-hidden text-white">
+      {/* 백그라운드 이미지 */}
       <img
         src={
           movie.backdrop_path
@@ -17,6 +18,7 @@ const MovieHero = ({ movie }: Props) => {
         className="w-full h-full object-cover"
       />
 
+      {/* 어두운 필터 + 텍스트 */}
       <div className="absolute inset-0 bg-black/60 flex items-center">
         <div className="max-w-6xl mx-auto px-6">
           <h1 className="text-5xl font-bold">{movie.title}</h1>
