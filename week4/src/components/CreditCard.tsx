@@ -11,11 +11,11 @@ export default function CreditCard({ Credit }: CreditCardProps) {
     : defaultImage;
 
   return (
-    <div className="flex flex-col items-center p-4">
+    <div className="w-33 flex flex-col items-center p-2">
       <img
         src={imageUrl}
         alt={Credit.name}
-        className="w-24 h-24 rounded-full object-cover"
+        className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
       />
       <div className="mt-2 text-center">
         <p className="text-sm font-semibold">{Credit.name}</p>

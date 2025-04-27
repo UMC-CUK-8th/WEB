@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import LoadingSpinner  from "../components/LoadingSpinner";
@@ -7,51 +6,67 @@ import { Movie } from "../types/movie";
 import CreditCard from "../components/CreditCard";
 import Star from "../components/Star";
 import TrailerButton from "../components/TrailerButton";
-
+import useCustomFetch from "../hooks/useCustomFetch";
 
 const MovieDetailPage = () => {
   const { movieId } = useParams();
-  const [movieDetail, setMovieDetail] = useState<Movie>();
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
+  // const [movieDetail, setMovieDetail] = useState<Movie>();
+  // const [isPending, setIsPending] = useState(false);
+  // const [isError, setIsError] = useState(false);
   const [crew, setCrew] = useState<Cast[]>([]);
 
+  const moviesUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`;
+
+  const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`;
+  
+  // 영화 상세 정보
+  const {data:movieDetail, isPending, isError} = useCustomFetch<Movie>(moviesUrl, 'ko-KR');  
+
+  // 감독/출연 정보
+  const {data:creditsData} = useCustomFetch<CreditsResponse>(creditsUrl, 'ko-KR');
+
   useEffect(() => {
-    console.log("현재 movieId:", movieId); 
-    const fetchMoviepage = async () => {
-      setIsPending(true);
-      try {
-        const { data: movieData } = await axios.get<Movie>(
-          `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-            },
-          }
-        );
-        setMovieDetail(movieData);
-
-        const { data: creditData } = await axios.get<CreditsResponse>(
-          `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-            },
-          }
-        );
-        setCrew(creditData.cast);
-      } catch (error) {
-        console.error("에러 발생:", error);
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
-
-    if (movieId) {
-      fetchMoviepage();
+    if (creditsData) {
+      setCrew(creditsData.cast);
     }
-  }, [movieId]);
+  }, [creditsData]);
+
+  // useEffect(() => {
+  //   console.log("현재 movieId:", movieId); 
+  //   const fetchMoviepage = async () => {
+  //     setIsPending(true);
+  //     try {
+  //       const { data: movieData } = await axios.get<Movie>(
+  //         `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+  //           },
+  //         }
+  //       );
+  //       setMovieDetail(movieData);
+
+  //       const { data: creditData } = await axios.get<CreditsResponse>(
+  //         `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+  //           },
+  //         }
+  //       );
+  //       setCrew(creditData.cast);
+  //     } catch (error) {
+  //       console.error("에러 발생:", error);
+  //       setIsError(true);
+  //     } finally {
+  //       setIsPending(false);
+  //     }
+  //   };
+
+  //   if (movieId) {
+  //     fetchMoviepage();
+  //   }
+  // }, [movieId]);
 
   if (isError) {
     return (
