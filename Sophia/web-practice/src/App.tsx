@@ -1,64 +1,82 @@
 import './App.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom';
 
-// import NotFoundPage from './pages/site/NotFoundPage';
-// import LoginPage from './pages/site/LoginPage';
-// import HomePage from './pages/site/HomePage';
-// import HomeLayout from './layouts/HomeLayout';
-// import SignupPage from './pages/site/SignupPage';
-// import MyPage from './pages/site/MyPage';
+import NotFoundPage from './pages/site/NotFoundPage';
+import LoginPage from './pages/site/LoginPage';
+import HomePage from './pages/site/HomePage';
+import HomeLayout from './layouts/HomeLayout';
+import SignupPage from './pages/site/SignupPage';
+import MyPage from './pages/site/MyPage';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedLayout from './layouts/ProtectedLayout';
 
-import NotFountPage from './pages/MoviePage/NotFountPage';
-import MovieDetail from './pages/MoviePage/MovieDetail';
-import MoviePage from './pages/MoviePage/indext';
-import HomePage from './pages/MoviePage/HomePage';
+// import NotFountPage from './pages/MoviePage/NotFountPage';
+// import MovieDetail from './pages/MoviePage/MovieDetail';
+// import MoviePage from './pages/MoviePage/indext';
+// import HomePage from './pages/MoviePage/HomePage';
 
-// const router = createBrowserRouter([
+const publicRoutes: RouteObject[] = [
+  {
+    path: '/',
+    element: <HomeLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />,
+      },
+    ],
+  },
+];
+
+const protectedRoutes: RouteObject[] = [
+  {
+    path: '/',
+    element: <ProtectedLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: 'my',
+        element: <MyPage />,
+      },
+    ],
+  },
+];
+
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
+
+// const movieRouter = createBrowserRouter([
 //   {
 //     path: '/',
-//     element: <HomeLayout />,
-//     errorElement: <NotFoundPage />,
+//     element: <HomePage />,
+//     errorElement: <NotFountPage />,
 //     children: [
 //       {
-//         index: true,
-//         element: <HomePage />,
+//         path: 'movies/:category',
+//         element: <MoviePage />,
 //       },
 //       {
-//         path: 'login',
-//         element: <LoginPage />,
-//       },
-//       {
-//         path: 'signup',
-//         element: <SignupPage />,
-//       },
-//       {
-//         path: 'my',
-//         element: <MyPage />,
+//         path: 'movie/:movieId',
+//         element: <MovieDetail />,
 //       },
 //     ],
 //   },
 // ]);
 
-const movieRouter = createBrowserRouter([
-  {
-    path: '/',
-    element: <HomePage />,
-    errorElement: <NotFountPage />,
-    children: [
-      {
-        path: 'movies/:category',
-        element: <MoviePage />,
-      },
-      {
-        path: 'movie/:movieId',
-        element: <MovieDetail />,
-      },
-    ],
-  },
-]);
-
 function App() {
-  return <RouterProvider router={movieRouter} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;
