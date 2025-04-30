@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput";
 import { useForm } from "../hooks/useForm";
-import { login } from "../api/auth";
+import { login as loginAPI } from "../api/auth";
 import LoadingSpinner from "../components/loading";
+import { useAuth } from "../context/authContext";
 
 const LoginPage = () => {
     const {
@@ -21,25 +22,31 @@ const LoginPage = () => {
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login: authLogin } = useAuth();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
         
         setLoading(true);
-        login(email, password)
-        .then((data) => {
-            console.log("로그인 성공:", data);
-            localStorage.setItem("accessToken", data.accessToken);
+        try {
+            const data = await loginAPI(email, password);
+            console.log("로그인 응답 data:", data);
+            const accessToken = data.data.accessToken;
+            if (!accessToken) {
+                alert("서버에서 accessToken을 반환하지 않았습니다.");
+                return;
+            }
+            await authLogin(accessToken);
             alert("로그인에 성공했습니다!");
             navigate("/");
-        })
-        .catch((err) => {
-            alert(err.response?.data?.message || "로그인에 실패했습니다");
-        })
-        .finally(() => {
+        } catch (err) {
+            alert(
+                (err as any)?.response?.data?.message || "로그인에 실패했습니다"
+            );
+        } finally {
             setLoading(false);
-        });
+        }
     };
 
     return (

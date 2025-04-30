@@ -16,3 +16,12 @@ export const login = async (email: string, password: string) => {
   });
   return response.data;
 };
+
+export const getMyInfo = async (token: string) => {
+  const response = await axios.get(`${BASE_URL}/v1/users/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+}
