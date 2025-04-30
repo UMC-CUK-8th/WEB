@@ -9,6 +9,7 @@ import SignupPage from './pages/site/SignupPage';
 import MyPage from './pages/site/MyPage';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedLayout from './layouts/ProtectedLayout';
+import GoogleLoginRedirectPage from './pages/site/GoogleLoginRedirectPage';
 
 // import NotFountPage from './pages/MoviePage/NotFountPage';
 // import MovieDetail from './pages/MoviePage/MovieDetail';
@@ -32,6 +33,10 @@ const publicRoutes: RouteObject[] = [
       {
         path: 'signup',
         element: <SignupPage />,
+      },
+      {
+        path: 'v1/auth/google/callback',
+        element: <GoogleLoginRedirectPage />,
       },
     ],
   },
