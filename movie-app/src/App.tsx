@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         element: <SignUpPage/>
       },
       {
-        path: 'oauth/callback',
+        path: '/v1/auth/google/callback',
         element: <OauthCallbackPage/>
       },
       {

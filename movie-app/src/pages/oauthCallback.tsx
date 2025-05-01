@@ -7,13 +7,11 @@ const OauthCallbackPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const accessToken = params.get("accessToken");
-    const refreshToken = params.get("refreshToken");
 
-    if (accessToken && refreshToken) {
+    if (accessToken) {
       localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
       alert("구글 로그인 성공!");
-      navigate("/");
+      navigate("/mypage");
     } else {
       alert("로그인 실패: 토큰이 없습니다.");
       navigate("/login");

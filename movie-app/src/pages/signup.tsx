@@ -60,6 +60,10 @@ const SignupPage = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_BE_URL}/v1/auth/google/login`;
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-black text-white px-4">
       <div className="w-full max-w-xs flex items-center justify-center relative mb-6">
@@ -82,9 +86,7 @@ const SignupPage = () => {
         >
           <button
             type="button"
-            onClick={() => {
-              window.location.href = `${import.meta.env.VITE_BE_URL}/v1/auth/google/login`;
-            }}
+            onClick={handleGoogleLogin}
             className="flex items-center justify-center w-full border border-purple-300 py-2 rounded mb-4 text-sm hover:bg-purple-300 hover:text-black transition"
           >
             <FcGoogle className="text-lg mr-2" /> 구글 로그인
