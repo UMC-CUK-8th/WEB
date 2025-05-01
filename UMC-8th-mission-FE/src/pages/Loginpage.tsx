@@ -12,22 +12,24 @@ const Loginpage = () => {
         if (accessToken) {
             navigate('/');
         }
-    }, [navigate, accessToken]);
+    }, [accessToken, navigate]);
 
     const { values, errors, touched, getInputProps} = useForm<UserSigninInformation>({
-        initailValue: {
+        initialValue: {
             email: "",
             password: "",
         },
         validate: validateSignIn,
     })
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         await login(values);
+        console.log("values:", values);
     };
 
     const handleGoogleLogin = () => {
-        window.localStorage.href = import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+        window.location.href = import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
     }
 
     const isDisabled = 
@@ -38,7 +40,7 @@ const Loginpage = () => {
             <div className="relative w-[300px] h-10 mt-8 mb-2 flex items-center justify-center">
                 <button
                     type="button"
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate(-1)}
                     className="absolute left-0 text-white text-2xl"
                 >
                     <img
@@ -54,7 +56,7 @@ const Loginpage = () => {
                 type="button"
                 onClick={handleGoogleLogin} 
                 disabled={isDisabled}
-                className="w-[300px] flex items-center justify-center gap-4 border border-white rounded-sm py-2 hover:bg-[#CEEDFF] hover:text-black transition-colors">
+                className="w-[300px] flex items-center justify-center gap-4 border border-white rounded-sm py-2 hover:bg-[#FF3A8D] hover:text-black hover:border-none transition-colors">
                 <img
                     src="/images/google.svg"
                     alt="google logo image"
@@ -69,11 +71,11 @@ const Loginpage = () => {
                 <div className="flex-1 h-px bg-white" />
             </div>
 
-            <div className="flex flex-col gap-3">
+            <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
                 <input
                     {...getInputProps("email")}
                     name="email"
-                    className={`border border-[#333} w-[300px] p-[10px] focus:border-[#807bff] rounded-sm
+                    className={`border border-[#333] w-[300px] p-[10px] focus:border-[#807bff] rounded-sm
                         ${errors?.email && touched?.email ? "border-red-500 bg-red-200" : "border-gray-300"}`}
                     type={'email'}
                     placeholder={"이메일"}  
@@ -84,7 +86,7 @@ const Loginpage = () => {
                 <input 
                     {...getInputProps("password")}
                     name="password"
-                    className={`border border-[#333} w-[300px] p-[10px] focus:border-[#807bff] rounded-sm
+                    className={`border border-[#333] w-[300px] p-[10px] focus:border-[#807bff] rounded-sm
                         ${errors?.password && touched?.password ? "border-red-500 bg-red-200" : "border-gray-300"}`}
                     type={'password'}
                     placeholder={"비밀번호"}  
@@ -92,14 +94,13 @@ const Loginpage = () => {
                 {errors?.password && touched?.password && (
                     <div className="text-red-500 text-sm">{errors.password}</div>
                 )}
-                <button type="button"
-                    onClick={handleSubmit} 
+                <button type="submit"
                     disabled={isDisabled} 
                     className="w-full bg-blue-600 text-white py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer disabled:bg-gray-300"
                 >
                     로그인
                 </button>
-            </div>
+            </form>
         </div>
     )
 }

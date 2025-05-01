@@ -34,8 +34,7 @@ const SignupPage = () => {
           회원가입
         </h2>
       </div>
-
-      {/* 본문 */}
+      
       {!email ? (
         <SignupEmailForm onNext={setEmail} />
       ) : !isDetailCompleted ? (
