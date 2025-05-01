@@ -33,11 +33,13 @@ const LoginPage = () => {
             const data = await loginAPI(email, password);
             console.log("로그인 응답 data:", data);
             const accessToken = data.data.accessToken;
-            if (!accessToken) {
-                alert("서버에서 accessToken을 반환하지 않았습니다.");
+            const refreshToken = data.data.refreshToken;
+            if (!accessToken || !refreshToken) {
+                alert("서버에서 토큰을 반환하지 않았습니다.");
                 return;
             }
             await authLogin(accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
             alert("로그인에 성공했습니다!");
             navigate("/");
         } catch (err) {
