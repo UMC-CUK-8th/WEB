@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useForm from "../hooks/useForm";
 import { UserSigninInformation, validateSignIn } from "../utils/validate";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 
 const Loginpage = () => {
     const {login, accessToken} = useAuth();
@@ -26,37 +26,48 @@ const Loginpage = () => {
         await login(values);
     };
 
+    const handleGoogleLogin = () => {
+        window.localStorage.href = import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+    }
+
     const isDisabled = 
         Object.values(errors || {}).some((error) => error.length > 0) || 
         Object.values(values).some((value) => value === ""); 
-
     return (
         <div className="flex flex-col items-center justify-center h-full gap-8">
-            <div className="relative w-[300px] h-10 mb-2">
+            <div className="relative w-[300px] h-10 mt-8 mb-2 flex items-center justify-center">
                 <button
-                    onClick={() => navigate("/")}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 text-white text-2xl"
+                    type="button"
+                    onClick={() => navigate('/')}
+                    className="absolute left-0 text-white text-2xl"
                 >
-                    &lt;
-                </button>
-                <h2 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xl font-semibold">
-                    로그인
-                </h2>
-            </div>
-
-                <button className="w-[300px] flex items-center justify-center gap-2 border border-white rounded-sm py-2 hover:bg-white hover:text-black transition-colors">
                     <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                        alt="google"
+                        src="/images/Back.svg"
+                        alt="Back Button image"
                         className="w-5 h-5"
                     />
-                    구글 로그인
                 </button>
-                <div className="flex items-center w-[300px] gap-5">
-                    <div className="flex-1 h-px bg-white" />
-                    <span className="text-gray-400 text-lg text-white">OR</span>
-                    <div className="flex-1 h-px bg-white" />
-                </div>
+                <h2 className="text-white text-xl font-semibold">로그인</h2>
+            </div>
+
+            <button 
+                type="button"
+                onClick={handleGoogleLogin} 
+                disabled={isDisabled}
+                className="w-[300px] flex items-center justify-center gap-4 border border-white rounded-sm py-2 hover:bg-[#CEEDFF] hover:text-black transition-colors">
+                <img
+                    src="/images/google.svg"
+                    alt="google logo image"
+                    className="w-5 h-5"
+                />
+                <span>구글 로그인</span>
+            </button>
+
+            <div className="flex items-center w-[300px] gap-5">
+                <div className="flex-1 h-px bg-white" />
+                <span className="text-gray-400 text-lg text-white">OR</span>
+                <div className="flex-1 h-px bg-white" />
+            </div>
 
             <div className="flex flex-col gap-3">
                 <input
