@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
+import GoogleLoginRedirectPage from "./pages/GoogleRedirectPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedLayout from "./layout/ProtectedLayout";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -33,6 +34,10 @@ const publicRoutes: RouteObject[] = [
       {
         path: "signup",
         element: <SignupPage />,
+      },
+      {
+        path: "v1/auth/google/callback",
+        element: <GoogleLoginRedirectPage />,
       },
     ],
   },

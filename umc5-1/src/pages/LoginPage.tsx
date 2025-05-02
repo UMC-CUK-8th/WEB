@@ -25,6 +25,10 @@ const LoginPage = () => {
     await login(values);
     navigate("/my");
   };
+  const handleGoogleLogin = () => {
+    window.location.href =
+      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+  };
 
   const isDisabled =
     Object.values(errors || {}).some((error) => error.length > 0) ||
@@ -43,6 +47,7 @@ const LoginPage = () => {
           <p className="text-3xl font-bold text-[#D0C1FF]">로그인</p>
         </div>
         <div
+          onClick={handleGoogleLogin}
           className={`flex border w-[300px] p-[10px] focus:border-[#807bff] rounded-lg text-white items-center gap-16 cursor-pointer`}
         >
           <img src={Google} alt="googleLogo" className={"w-[28px] h-[28px]"} />
