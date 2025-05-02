@@ -29,6 +29,11 @@ const LoginPage=()=>{
       await login(values);
     };
 
+
+    const handleGoogleLogin=()=>{
+
+        window.location.href=import.meta.env.VITE_SERVER_API_URL+"/v1/auth/google/login";
+    };
     const isDisabled =
         Object.values(errors || {}).some((error) => error.length > 0) ||
         Object.values(values).some((value) => value === "");
@@ -43,8 +48,11 @@ const LoginPage=()=>{
                     </button>
                     <span>로그인</span>
                 </div>
-                <button type='button' className="w-full text-white py-3 rounded-md text-lg font-medium border border-white cursor-pointer">
-                    구글 로그인
+                <button type='button' onClick={handleGoogleLogin}  className="w-full text-white py-3 rounded-md text-lg font-medium border border-white cursor-pointer">
+                    <div className="flex items-center justify-center gap-4">
+                        
+                        <span>구글 로그인</span>
+                    </div>
                 </button>
                 <div className="flex items-center justify-between pt-2 pb-2">
                     <hr className="w-1/3"/>
