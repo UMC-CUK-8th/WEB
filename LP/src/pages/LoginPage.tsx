@@ -4,9 +4,20 @@ import { UserSigninInformation, validateSignin } from "../utils/validate";
 import { postSignin } from "../apis/auth";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
 const LoginPage=()=>{
-    const {setItem}=useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+    const {login,accessToken}=useAuth();
+    const navigate=useNavigate();
+
+    useEffect(()=>{
+        if(accessToken){
+            navigate('/')
+        }
+    },[navigate,accessToken]);
+
+
     const {values,errors,touched,getInputProps}=useForm<UserSigninInformation>({
         initialValue:{
             email:"",
@@ -15,24 +26,13 @@ const LoginPage=()=>{
         validate:validateSignin,
     })
     const handleSubmit=async()=>{
-        console.log(values);
-        try{
-            const response=await postSignin(values);
-            
-            setItem(response.data.accessToken);
-            navigate("/")
-        } catch(error){
-        }
-
-
-        
+      await login(values);
     };
 
     const isDisabled =
         Object.values(errors || {}).some((error) => error.length > 0) ||
         Object.values(values).some((value) => value === "");
 
-    const navigate=useNavigate();
         
     return (
         <div className="flex flex-col items-center justify-center h-full gap-4 text-white bg-black">
