@@ -28,7 +28,7 @@ const MyPage = () => {
     return (
 
         <div>
-        {data?.data?.name}님 환영합니다.
+        {data?.data.name}님 환영합니다.
         <button 
         className="cursor-pointer bg-blue-300 rounded-sm p-5 hover:scale-90"
         onClick={handleLogout}>로그아웃</button>

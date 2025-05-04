@@ -69,10 +69,7 @@ const SignupPage = () => {
         <h1 className="text-xl font-bold">회원가입</h1>
     </div>
 
-    <button 
-    className="flex items-center justify-center gap-2 border border-gray-300 w-[300px] rounded-md p-2 mb-4
-    hover:bg-blue-300 transition-colors cursor-pointer"
-    type="button">구글 로그인</button>
+    
 
     <div className="flex flex-col gap-3">
         <input
