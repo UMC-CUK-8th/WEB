@@ -21,3 +21,10 @@ export const getMyInfo = async (): Promise<ResponseMyTypeDto> => {
 
   return data;
 };
+
+// 로그아웃 api
+export const postLogout = async () => {
+  const { data } = await axiosInstance.post('/v1/auth/signout');
+
+  return data;
+};

@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import useForm from '../../hooks/useForm';
 import { UserSigninInformation, validateSignin } from '../../utils/validate';
-import { postSignin } from '../../apis/auth';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { LOCAL_STORAGE_KEY } from '../../constants/key';
+import { useAuth } from '../../context/AuthContext';
+import { useEffect } from 'react';
 
 export default function LoginPage() {
   const { values, errors, touched, getInputProps } = useForm<UserSigninInformation>({
@@ -16,7 +15,13 @@ export default function LoginPage() {
   });
 
   const navigate = useNavigate();
-  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+  const { login, accessToken } = useAuth();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [accessToken, navigate]);
 
   const handleBack = () => {
     navigate(-1);
@@ -24,16 +29,12 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(values);
 
-    try {
-      const response = await postSignin(values);
-      setItem(response.data.accessToken);
-      alert('로그인 성공!');
-      navigate('/');
-    } catch (error) {
-      alert(error);
-    }
+    await login(values);
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = import.meta.env.VITE_SERVER_API_URL + '/v1/auth/google/login';
   };
 
   // 에러가 있거나 입력값이 비어있을 경우 버튼의 isDisabled === true
@@ -55,6 +56,10 @@ export default function LoginPage() {
 
         <button type='submit' disabled={isDisabled} className='w-full bg-pink-500 text-white py-3 rounded-md text-lg font-medium hover:bg-pink-700 transition-colors cursor-pointer disabled:bg-[#1f1e1e]'>
           로그인
+        </button>
+        <button type='button' className='w-full bg-pink-400 text-white py-3 rounded-md text-lg font-medium hover:bg-pink-700 transition-colors cursor-pointer disabled:bg-[#1f1e1e] flex justify-center gap-2' onClick={handleGoogleLogin}>
+          <img src={'/src/assets/google.svg'} alt='구글 로고' className='w-8 h-8' />
+          구글 로그인
         </button>
       </form>
     </div>
