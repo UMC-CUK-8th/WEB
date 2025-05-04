@@ -2,13 +2,13 @@ import { ChangeEvent, useEffect, useState } from "react";
 
 interface UseFormProps<T> {
     //
-    initailValue: T; // { email: '', password: '' }
+    initialValue: T; // { email: '', password: '' }
     // 올바른지 체크
     validate: (values: T) => Record<keyof T, string>; // T에 대한 키 값을 받고, 그것에 대한 value가 string이다라고 이해하면 된다. 
 }
 
-function useForm<T>({initailValue, validate}: UseFormProps<T>) {
-    const [values, setValues] = useState(initailValue);
+function useForm<T>({initialValue, validate}: UseFormProps<T>) {
+    const [values, setValues] = useState(initialValue);
     const [touched, setTouched] = useState<Record<string, boolean>>();
     const [errors, setErrors] = useState<Record<string, string>>();
 
