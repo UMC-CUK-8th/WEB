@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/authContext";
 
 const navItems = [
     { to: '/', label: "홈" },
@@ -14,6 +15,8 @@ const navAccount = [
 ]
 
 const Navbar = () => {
+    const { isAuthenticated, user, logout } = useAuth();
+
     return (
         <nav className="w-full py-4 px-6 bg-white flex justify-between items-center text-sm font-medium">
             <div className="flex space-x-6">
@@ -29,24 +32,42 @@ const Navbar = () => {
                     </NavLink>
                 ))}
             </div>
-            <div className="flex space-x-4">
-                {navAccount.map(({ to, label }) =>
-                    label === "회원가입" ? (
+            <div className="flex space-x-4 items-center">
+                {isAuthenticated ? (
+                    <>
+                        <span className="text-gray-700">{user?.nickname}님, 환영합니다.</span>
                         <NavLink
-                            key={to}
-                            to={to}
-                            className="bg-purple-600 text-white px-4 py-1.5 rounded hover:bg-purple-700 transition"
+                        to="/mypage"
+                        className="bg-purple-600 text-white px-4 py-1.5 rounded hover:bg-purple-700 transition"
                         >
-                            {label}
+                        마이페이지
                         </NavLink>
-                    ) : (
-                        <NavLink
-                            key={to}
-                            to={to}
-                            className="px-4 py-1.5 text-gray-500 hover:text-gray-800 transition"
+                        <button
+                        onClick={logout}
+                        className="px-4 py-1.5 text-gray-500 hover:text-gray-800 transition"
                         >
-                            {label}
-                        </NavLink>
+                        로그아웃
+                        </button>
+                    </>
+                ) : (
+                    navAccount.map(({ to, label }) =>
+                        label === "회원가입" ? (
+                            <NavLink
+                                key={to}
+                                to={to}
+                                className="bg-purple-600 text-white px-4 py-1.5 rounded hover:bg-purple-700 transition"
+                            >
+                                {label}
+                            </NavLink>
+                        ) : (
+                            <NavLink
+                                key={to}
+                                to={to}
+                                className="px-4 py-1.5 text-gray-500 hover:text-gray-800 transition"
+                            >
+                                {label}
+                            </NavLink>
+                        )
                     )
                 )}
             </div>

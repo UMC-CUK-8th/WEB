@@ -1,6 +1,7 @@
 import './App.css';
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import { AuthProvider } from './context/authContext';
 
 import HomePage from './pages/home';
 import SignUpPage from './pages/signup';
@@ -13,6 +14,8 @@ import NotFound from './pages/not-found';
 import RootLayout from './layout/root-layout';
 import MovieDetailPage from './pages/movieDetail';
 import OauthCallbackPage from './pages/oauthCallback';
+import MyPage from './pages/my';
+import ProtectedRoute from './components/protectedRoute';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +48,7 @@ const router = createBrowserRouter([
         element: <SignUpPage/>
       },
       {
-        path: 'oauth/callback',
+        path: '/v1/auth/google/callback',
         element: <OauthCallbackPage/>
       },
       {
@@ -56,12 +59,20 @@ const router = createBrowserRouter([
         path: 'movies/:movieId',
         element: <MovieDetailPage/>
       },
+      {
+        path: 'mypage',
+        element: <ProtectedRoute><MyPage/></ProtectedRoute> 
+      },
     ]
   },
 ])
 
 function App() {
-  return <RouterProvider router={router}/>
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

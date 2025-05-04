@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput";
 import { useForm } from "../hooks/useForm";
-import { login } from "../api/auth";
+import { login as loginAPI } from "../api/auth";
 import LoadingSpinner from "../components/loading";
+import { useAuth } from "../context/authContext";
 
 const LoginPage = () => {
     const {
@@ -21,25 +22,37 @@ const LoginPage = () => {
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { login: authLogin } = useAuth();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!validate()) return;
         
         setLoading(true);
-        login(email, password)
-        .then((data) => {
-            console.log("로그인 성공:", data);
-            localStorage.setItem("accessToken", data.accessToken);
+        try {
+            const data = await loginAPI(email, password);
+            console.log("로그인 응답 data:", data);
+            const accessToken = data.data.accessToken;
+            const refreshToken = data.data.refreshToken;
+            if (!accessToken || !refreshToken) {
+                alert("서버에서 토큰을 반환하지 않았습니다.");
+                return;
+            }
+            await authLogin(accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
             alert("로그인에 성공했습니다!");
             navigate("/");
-        })
-        .catch((err) => {
-            alert(err.response?.data?.message || "로그인에 실패했습니다");
-        })
-        .finally(() => {
+        } catch (err) {
+            alert(
+                (err as any)?.response?.data?.message || "로그인에 실패했습니다"
+            );
+        } finally {
             setLoading(false);
-        });
+        }
+    };
+
+    const handleGoogleLogin = () => {
+        window.location.href = `${import.meta.env.VITE_BE_URL}/v1/auth/google/login`;
     };
 
     return (
@@ -54,12 +67,7 @@ const LoginPage = () => {
                 <h1 className="text-xl font-bold">로그인</h1>
             </div>
 
-            <button
-                onClick={() => {
-                    window.location.href = `${import.meta.env.VITE_BE_URL}/v1/auth/google/login`;
-                }}
-                className="flex items-center justify-center w-full max-w-xs border border-purple-300 py-2 rounded mb-4 text-sm hover:bg-purple-300 hover:text-black transition"
-            >
+            <button onClick={handleGoogleLogin} className="flex items-center justify-center w-full max-w-xs border border-purple-300 py-2 rounded mb-4 text-sm hover:bg-purple-300 hover:text-black transition">
                 <FcGoogle className="text-lg mr-2" /> 구글 로그인
             </button>
 
