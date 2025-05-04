@@ -3,13 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { UserSigninInformation, validateSignin } from '../utils/validate';
 import BeforeIcon from '../assets/Before.svg';
 import Google from '../assets/Google.svg';
-import { postSignin } from '../apis/auth';
-import {useLocalStorage} from '../hooks/useLocalStorage';
-import {LOCAL_STORAGE_KEY} from '../constants/key';
+import { useAuth } from '../context/AuthContext';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
-  const {setItem} = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const navigate = useNavigate();
+  const { login, accessToken } = useAuth();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/');
+    }
+  }, [accessToken, navigate]);
   const {values, errors, touched, getInputProps} = useForm<UserSigninInformation>({
     initialValue: {
       email: "",
@@ -18,17 +23,11 @@ const LoginPage = () => {
     validate: validateSignin,
   });
   const handleSubmit = async () => {
-    console.log( values);
-    try{
-      const response = await postSignin(values);
-      setItem(response.data.accessToken);
-      console.log(response);
-      navigate("/");
-    }catch (error) {
-      alert(error);
-    }
-    
-    
+    await login(values);    
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = import.meta.env.VITE_SERVER_API_URL + '/v1/auth/google/login';
   };
 
   // 오류가 하나라도 있거나, 입력값이 비어있으면 버튼 비활성화
@@ -43,7 +42,7 @@ const LoginPage = () => {
           <img src={BeforeIcon} alt="before" className="w-[30px] h-[30px] cursor-pointer" onClick={() => navigate(-1)} />
           <p className="text-3xl font-bold text-[#D0C1FF]">로그인</p>
         </div>
-        <div className={`flex border w-[300px] p-[10px] focus:border-[#807bff] rounded-lg text-white items-center gap-16 cursor-pointer`}>
+        <div onClick={handleGoogleLogin} className={`flex border w-[300px] p-[10px] focus:border-[#807bff] rounded-lg text-white items-center gap-16 cursor-pointer`}>
           <img src={Google} alt="googleLogo" className={"w-[28px] h-[28px]"}/>구글 로그인
         </div>
         <div className="flex items-center w-[300px] gap-2 my-2">
