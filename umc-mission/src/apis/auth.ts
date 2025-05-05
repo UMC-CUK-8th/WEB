@@ -24,7 +24,7 @@ export const postSignin = async (body: RequestSigninDTO):Promise<ResponseSigninD
 
 export const getMyInfo = async ():Promise<ResponseMyInfoDTO> => {
     const {data} = await axiosInstance.get(
-        "/v1/users/my",
+        "/v1/users/me",
     );
 
     return data;
