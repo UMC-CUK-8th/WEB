@@ -1,58 +1,31 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { MovieDetail, Credits } from "../types/movie";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import useCustomFetch from "../hooks/useCustomFetch";
 
 export default function MovieDetailPage() {
   const { movieId } = useParams<{ movieId: string }>();
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
-  const [credits, setCredits] = useState<Credits | null>(null);
-  const [isPending, setIsPending] = useState(false);
-  const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsPending(true);
-      try {
-        const [movieRes, creditsRes] = await Promise.all([
-          axios.get<MovieDetail>(
-            `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
-            {
-              headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-                accept: "application/json",
-              },
-            }
-          ),
-          axios.get<Credits>(
-            `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
-            {
-              headers: {
-                Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
-                accept: "application/json",
-              },
-            }
-          ),
-        ]);
+  const movieUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`;
+  const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`;
 
-        setMovie(movieRes.data);
-        setCredits(creditsRes.data);
-      } catch (err) {
-        setIsError(true);
-      } finally {
-        setIsPending(false);
-      }
-    };
+  const {
+    data: movie,
+    isPending: isMoviePending,
+    isError: isMovieError,
+  } = useCustomFetch<MovieDetail>(movieUrl);
 
-    if (movieId) fetchData();
-  }, [movieId]);
+  const {
+    data: credits,
+    isPending: isCreditsPending,
+    isError: isCreditsError,
+  } = useCustomFetch<Credits>(creditsUrl);
 
-  if (isError) {
+  if (isMovieError || isCreditsError) {
     return <div className="text-red-500 text-2xl">에러 발생!</div>;
   }
 
-  if (isPending || !movie || !credits) {
+  if (isMoviePending || isCreditsPending || !movie || !credits) {
     return (
       <div className="flex justify-center items-center h-screen">
         <LoadingSpinner />
