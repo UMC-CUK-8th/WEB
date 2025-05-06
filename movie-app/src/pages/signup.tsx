@@ -69,7 +69,7 @@ const SignupPage = () => {
       <div className="w-full max-w-xs flex items-center justify-center relative mb-6">
         <button
           onClick={() => (step === 1 ? navigate(-1) : setStep(step - 1))}
-          className="absolute left-0 text-white text-2xl hover:text-purple-400 transition"
+          className="absolute left-0 text-white text-2xl hover:text-red-500 transition"
         >
           <IoChevronBack />
         </button>
@@ -87,7 +87,7 @@ const SignupPage = () => {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="flex items-center justify-center w-full border border-purple-300 py-2 rounded mb-4 text-sm hover:bg-purple-300 hover:text-black transition"
+            className="flex items-center justify-center w-full border border-red-500 py-2 rounded mb-4 text-sm hover:bg-red-600 transition"
           >
             <FcGoogle className="text-lg mr-2" /> 구글 로그인
           </button>

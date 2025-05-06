@@ -16,6 +16,7 @@ import MovieDetailPage from './pages/movieDetail';
 import OauthCallbackPage from './pages/oauthCallback';
 import MyPage from './pages/my';
 import ProtectedRoute from './components/protectedRoute';
+import LPDetail from './pages/lpDetail';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
         path: 'mypage',
         element: <ProtectedRoute><MyPage/></ProtectedRoute> 
       },
+      {
+        path: 'lp/:lpId',
+        element: <ProtectedRoute><LPDetail /></ProtectedRoute>
+      },      
     ]
   },
 ])
