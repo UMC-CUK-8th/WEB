@@ -4,9 +4,9 @@ const HomeLayout = () => {
   return (
     <div className="h-dvh flex flex-col">
       <nav className="flex items-center justify-between bg-[#1e1e1e] text-white p-4">
-        <Link to="/" className="flex text-[#D0C1FF] font-bold text-2xl">
+        <div className="flex text-[#ac0576] font-bold text-2xl">
           돌려돌려 LP판
-        </Link>
+        </div>
         <div className="flex items-center gap-2">
           <Link
             to="/login"
@@ -16,7 +16,7 @@ const HomeLayout = () => {
           </Link>
           <Link
             to="/signup"
-            className="w-20 bg-[#D0C1FF] p-2 rounded-md text-black text-center"
+            className="w-20 bg-[#ac0576] p-2 rounded-md text-black text-center"
           >
             회원가입
           </Link>

@@ -8,6 +8,7 @@ import Google from "../assets/Google.svg";
 import { postSignup } from "../apis/auth";
 import { FiMail, FiEye, FiEyeOff } from "react-icons/fi";
 import defaultProfile from "../assets/defaultProfile.svg";
+
 const schema = z
   .object({
     email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
@@ -69,14 +70,14 @@ const SignupPage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 bg-black">
       <div className="flex flex-col gap-3">
-        <header className="flex items-center  gap-18 mb-8">
+        <header className="flex items-center gap-18 mb-8">
           <img
             src={BeforeIcon}
             alt="before"
             className="w-[30px] h-[30px] cursor-pointer"
             onClick={() => navigate(-1)}
           />
-          <p className="text-3xl font-bold text-[#D0C1FF]">회원가입</p>
+          <p className="text-3xl font-bold text-[#ac0576]">회원가입</p>
         </header>
 
         <form
@@ -87,7 +88,7 @@ const SignupPage = () => {
           {step === 1 && (
             <>
               <div
-                className={`flex border w-[300px] p-[10px] focus:border-[#807bff] rounded-lg text-white items-center gap-16 cursor-pointer`}
+                className={`flex border w-[300px] p-[10px] focus:border-[#ac0576] rounded-lg text-white items-center gap-16 cursor-pointer`}
               >
                 <img
                   src={Google}
@@ -104,7 +105,7 @@ const SignupPage = () => {
               <input
                 {...register("email")}
                 name="email"
-                className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#D0C1FF] rounded-sm text-white
+                className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#ac0576] rounded-sm text-white
             ${errors?.email ? "border-red-500" : "border-[#ccc]"}`}
                 type={"email"}
                 placeholder={"이메일을 입력해주세요!"}
@@ -118,7 +119,7 @@ const SignupPage = () => {
                 type="button"
                 onClick={() => setStep(2)}
                 disabled={!!errors.email || !email}
-                className="w-full bg-[#D0C1FF] text-black py-3 rounded-md text-lg font-bold hover:bg-[#3f397c] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
+                className="w-full bg-[#ac0576] text-black py-3 rounded-md text-lg font-bold hover:bg-[#820452] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
               >
                 다음
               </button>
@@ -134,7 +135,7 @@ const SignupPage = () => {
                 <input
                   {...register("password")}
                   name="password"
-                  className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#D0C1FF] rounded-sm text-white
+                  className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#ac0576] rounded-sm text-white
               ${errors?.password ? "border-red-500 " : "border-[#ccc]"}`}
                   type={isPasswordHidden ? "password" : "text"}
                   placeholder={"비밀번호를 입력해주세요!"}
@@ -160,7 +161,7 @@ const SignupPage = () => {
                 <input
                   {...register("passwordCheck")}
                   name="passwordCheck"
-                  className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#D0C1FF] rounded-sm text-white
+                  className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#ac0576] rounded-sm text-white
               ${errors?.passwordCheck ? "border-red-500 " : "border-[#ccc]"}`}
                   type={isPasswordCheckHidden ? "password" : "text"}
                   placeholder={"비밀번호 확인!"}
@@ -188,7 +189,7 @@ const SignupPage = () => {
                 disabled={
                   !password || !passwordCheck || password !== passwordCheck
                 }
-                className="w-full bg-[#D0C1FF] text-black py-3 rounded-md text-lg font-bold hover:bg-[#3f397c] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
+                className="w-full bg-[#ac0576] text-black py-3 rounded-md text-lg font-bold hover:bg-[#820452] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
               >
                 다음
               </button>
@@ -205,7 +206,7 @@ const SignupPage = () => {
               <input
                 {...register("name")}
                 name="name"
-                className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#D0C1FF] rounded-sm text-white
+                className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#ac0576] rounded-sm text-white
           ${errors?.name ? "border-red-500" : "border-[#ccc]"}`}
                 type={"name"}
                 placeholder={"이름을 입력해주세요!"}
@@ -219,7 +220,7 @@ const SignupPage = () => {
                 type="button"
                 onClick={handleSubmit(onSubmit)}
                 disabled={isSubmitting}
-                className="w-full bg-[#D0C1FF] text-black py-3 rounded-md text-lg font-bold hover:bg-[#3f397c] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
+                className="w-full bg-[#ac0576] text-black py-3 rounded-md text-lg font-bold hover:bg-[#820452] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
               >
                 회원가입
               </button>

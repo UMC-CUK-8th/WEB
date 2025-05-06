@@ -1,5 +1,26 @@
+import React from "react";
+
 const HomePage = () => {
-  return <h1>Home Page 야호~!</h1>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "black",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "2.5rem",
+          color: "#ac0576",
+        }}
+      >
+        HomePage
+      </h1>
+    </div>
+  );
 };
 
 export default HomePage;

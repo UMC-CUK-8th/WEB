@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { UserSigninInformation, validateSignin } from "../utils/validate";
 import BeforeIcon from "../assets/Before.svg";
 import Google from "../assets/Google.svg";
-//import { postSignin } from "../apis/auth";
-//import { useLocalStorage } from "../hooks/useLocalStorage";
-//import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { useAuth } from "../context/AuthContext";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { LOCAL_STORAGE_KEY } from "../constants/key";
+import { postSignin } from "../apis/auth";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const navigate = useNavigate();
-  //const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
-
   const { values, errors, touched, getInputProps } =
     useForm<UserSigninInformation>({
       initialValue: {
@@ -22,34 +20,36 @@ const LoginPage = () => {
       validate: validateSignin,
     });
   const handleSubmit = async () => {
-    await login(values);
-    navigate("/my");
-  };
-  const handleGoogleLogin = () => {
-    window.location.href =
-      import.meta.env.VITE_SERVER_API_URL + "/v1/auth/google/login";
+    console.log(values);
+    try {
+      const response = await postSignin(values);
+      setItem(response.data.accessToken);
+      console.log(response);
+      navigate("/");
+    } catch (error) {
+      alert(error);
+    }
   };
 
+  // 오류가 하나라도 있거나, 입력값이 비어있으면 버튼 비활성화
   const isDisabled =
-    Object.values(errors || {}).some((error) => error.length > 0) ||
-    Object.values(values).some((value) => value === "");
+    Object.values(errors || {}).some((error) => error.length > 0) || //오류가 있으면
+    Object.values(values).some((value) => value === ""); //입력값이 비어있으면
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-4 bg-black">
       <div className="flex flex-col gap-3">
-        <div className="flex items-center  gap-18 mb-8">
+        <div className="flex items-center gap-18 mb-8">
           <img
             src={BeforeIcon}
             alt="before"
             className="w-[30px] h-[30px] cursor-pointer"
+            style={{ fill: "#ac0576" }}
             onClick={() => navigate(-1)}
           />
-          <p className="text-3xl font-bold text-[#D0C1FF]">로그인</p>
+          <p className="text-3xl font-bold text-[#ac0576]">로그인</p>
         </div>
-        <div
-          onClick={handleGoogleLogin}
-          className={`flex border w-[300px] p-[10px] focus:border-[#807bff] rounded-lg text-white items-center gap-16 cursor-pointer`}
-        >
+        <div className="flex border w-[300px] p-[10px] focus:border-[#ac0576] rounded-lg text-white items-center gap-16 cursor-pointer">
           <img src={Google} alt="googleLogo" className={"w-[28px] h-[28px]"} />
           구글 로그인
         </div>
@@ -61,10 +61,12 @@ const LoginPage = () => {
         <input
           {...getInputProps("email")}
           name="email"
-          className={`border w-[300px] p-[10px] focus:border-[#807bff] rounded-sm text-white
-          ${
-            errors?.email && touched?.email ? "border-red-500" : "border-[#ccc]"
-          }`}
+          className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#ac0576] rounded-sm text-white
+            ${
+              errors?.email && touched?.email
+                ? "border-red-500"
+                : "border-[#ccc]"
+            }`}
           type={"email"}
           placeholder={"이메일을 입력해주세요!"}
         />
@@ -74,12 +76,12 @@ const LoginPage = () => {
         <input
           {...getInputProps("password")}
           name="password"
-          className={`border w-[300px] p-[10px] focus:border-[#807bff] rounded-sm text-white
-          ${
-            errors?.password && touched?.password
-              ? "border-red-500 bg-red-200"
-              : "border-[#ccc]"
-          }`}
+          className={`border w-[300px] p-[10px] focus:outline-none focus:border-[#ac0576] rounded-sm text-white
+            ${
+              errors?.password && touched?.password
+                ? "border-red-500 bg-red-200"
+                : "border-[#ccc]"
+            }`}
           type={"password"}
           placeholder={"비밀번호를 입력해주세요!"}
         />
@@ -90,7 +92,7 @@ const LoginPage = () => {
           type="button"
           onClick={handleSubmit}
           disabled={isDisabled}
-          className="w-full bg-[#D0C1FF] text-black py-3 rounded-md text-lg font-bold hover:bg-[#3f397c] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white "
+          className="w-full bg-[#ac0576] text-white py-3 rounded-md text-lg font-bold hover:bg-[#9a045f] transition-colors cursor-pointer disabled:bg-[#1f1e1e] disabled:text-white"
         >
           로그인
         </button>
