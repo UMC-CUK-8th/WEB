@@ -6,7 +6,6 @@ const HomeLayout = () => {
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       <nav className="h-16 flex items-center justify-between px-6 bg-[#141414] shrink-0">
-        <div className="text-pink-500 font-bold text-lg">돌려돌려비디오테이프</div>
         <div className="flex gap-4">
           <button
             className="bg-black px-4 py-2 rounded text-white"
