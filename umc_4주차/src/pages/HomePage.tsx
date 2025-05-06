@@ -1,9 +1,3 @@
-// const HomePage = () => {
-//   return <div>HomePage</div>;
-// };
-
-// export default HomePage;
-
 import React from "react";
 
 const HomePage = () => {
@@ -20,6 +14,7 @@ const HomePage = () => {
       <h1
         style={{
           fontSize: "2.5rem",
+          fontWeight: "bold",
           color: "#ac0576",
         }}
       >

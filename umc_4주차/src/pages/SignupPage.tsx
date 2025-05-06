@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import BeforeIcon from "../assets/Before.svg";
+import { BsChevronLeft } from "react-icons/bs";
 import Google from "../assets/Google.svg";
 import { postSignup } from "../apis/auth";
 import { FiMail, FiEye, FiEyeOff } from "react-icons/fi";
@@ -71,10 +71,9 @@ const SignupPage = () => {
     <div className="flex flex-col items-center justify-center h-full gap-4 bg-black">
       <div className="flex flex-col gap-3">
         <header className="flex items-center gap-18 mb-8">
-          <img
-            src={BeforeIcon}
-            alt="before"
-            className="w-[30px] h-[30px] cursor-pointer"
+          <BsChevronLeft
+            className="w-[25px] h-[25px] text-[#ac0576] cursor-pointer"
+            style={{ strokeWidth: "1px" }}
             onClick={() => navigate(-1)}
           />
           <p className="text-3xl font-bold text-[#ac0576]">회원가입</p>

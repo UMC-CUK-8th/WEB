@@ -1,7 +1,7 @@
 import useForm from "../hooks/useForm";
 import { useNavigate } from "react-router-dom";
 import { UserSigninInformation, validateSignin } from "../utils/validate";
-import BeforeIcon from "../assets/Before.svg";
+import { BsChevronLeft } from "react-icons/bs";
 import Google from "../assets/Google.svg";
 import { postSignin } from "../apis/auth";
 import { useLocalStorage } from "../hooks/useLocalStorage";
@@ -39,11 +39,9 @@ const LoginPage = () => {
     <div className="flex flex-col items-center justify-center h-full gap-4 bg-black">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-18 mb-8">
-          <img
-            src={BeforeIcon}
-            alt="before"
-            className="w-[30px] h-[30px] cursor-pointer"
-            style={{ fill: "#ac0576" }}
+          <BsChevronLeft
+            className="w-[25px] h-[25px] text-[#ac0576] cursor-pointer"
+            style={{ strokeWidth: "1px" }}
             onClick={() => navigate(-1)}
           />
           <p className="text-3xl font-bold text-[#ac0576]">로그인</p>
