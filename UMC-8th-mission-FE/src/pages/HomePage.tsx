@@ -1,47 +1,85 @@
-import useGetLpList from "../hooks/queries/useGetLpList";
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
+import { PAGINATION_ORDER } from "../enums/common";
+import LpCard from "../components/LpCard/LpCard";
+import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 
 const HomePage = () => {
-  const { data } = useGetLpList({});
+  const [search, setSearch ] = useState("");
+  const [sortOrder, setSortOrder] = useState(PAGINATION_ORDER.desc);
+  // const { data } = useGetLpList({
+  //   search,
+  //   limit:50,
+  // });
+  
+  const { 
+    data:lps, 
+    isFetching, 
+    hasNextPage, 
+    isPending, 
+    fetchNextPage, 
+    isError 
+  } = useGetInfiniteLpList(1, search, sortOrder);
 
-  const lpList = data ?? [];
+  // ref, inView
+  // ref -> 특정한 HTML 요소를 감시할 수 있다.
+  // inView -> 그 요소가 화면에 보이면 true.
+  const { ref, inView } = useInView({
+    threshold: 0,
+  })
 
-  console.log(data);
+  useEffect(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  if (isPending) {
+    return <div className={"mt-20"}>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className={"mt-20"}>Error...</div>;
+  }
+
+  console.log(lps?.pages.map((page) => page.data.data));
+  // [[1, 2], [3, 4]].flat() => [1, 2, 3, 4]
+
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === PAGINATION_ORDER.desc ? PAGINATION_ORDER.asc : PAGINATION_ORDER.desc);
+  };
 
   return (
-    <div className="w-full overflow-x-hidden px-4">
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 my-8">
-        {lpList.map((lp) => (
-          <div
-            key={lp.id}
-            className="aspect-square bg-gray-800 rounded overflow-hidden hover:opacity-90 cursor-pointer"
-          >
-            <img
-              src={lp.thumbnail}
-              alt={lp.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
+    <div className="w-full overflow-x-hidden px-2">
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={toggleSortOrder}
+          className="bg-pink-500 text-white px-4 py-2 rounded-lg"
+        >
+          {sortOrder === PAGINATION_ORDER.desc ? "최신순" : "오래된순"}
+        </button>
+      </div>
+      <div className={"mt-4"}>
+        <input value={search} onChange={(e) => setSearch(e.target.value)} />
+        {/*{lps?.pages?.map((page) => console.log(page.data.data))}*/}
       </div>
 
-      <div className="bg-[#434343] w-full h-[400px] mb-32 flex items-center justify-center text-3xl font-bold">
-        오늘의 추천 영화
+      <div className={
+          "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        }
+      >
+        {isPending && <LpCardSkeletonList count={20}  />}
+        {lps?.pages
+          ?.map((page) => page.data.data)
+          ?.flat()
+          ?.map((lp) => (
+            <LpCard key={lp.id} lp={lp} />
+          ))
+        }
+        {isFetching && <LpCardSkeletonList count={20} />}
       </div>
-
-      <div className="mb-28">
-        <h2 className="text-3xl font-semibold mb-12">박스오피스 랭킹</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-[#434343] h-[150px] flex items-center justify-center"
-            >
-              #{idx + 1}
-            </div>
-          ))}
-        </div>
-      </div>
+      <div ref={ref} className="h-2"></div>
     </div>
   );
 };
