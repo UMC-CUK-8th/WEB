@@ -11,7 +11,7 @@ export default function LpCard({ data }: LpCardProps) {
   const navigate = useNavigate();
 
   return (
-    <div className='relative shadow-lg overflow-hidden cursor-pointer w-44 transition-transform duration-500 hover:scale-105' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => navigate(`/${data.id}`)}>
+    <div className='relative shadow-lg overflow-hidden cursor-pointer transition-transform duration-500 hover:scale-105' onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => navigate(`/${data.id}`)}>
       <img src={data.thumbnail} alt={data.title} className='w-44 h-44 object-cover' />
 
       {isHovered && (

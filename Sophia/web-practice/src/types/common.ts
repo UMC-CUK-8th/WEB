@@ -17,7 +17,7 @@ export type CursorResponse<T> = {
 export type CursorBasedResponse<T> = CommonResponse<{
   data: T;
   nextCursor: number | null;
-  hasnext: boolean;
+  hasNext: boolean;
 }>;
 
 export type PaginationDto = {
