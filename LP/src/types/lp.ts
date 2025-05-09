@@ -11,7 +11,7 @@ export type Likes={
     lpId:number;
 }
 
-export type LpItems={
+export type Lp={
         id:number;
         title:string;
         content:string;
@@ -23,11 +23,19 @@ export type LpItems={
         tags:Tag[];
         likes:Likes[];
 }
-export type ResponseLpListDto=CursorBasedResponse<{
-    data:LpItems[];
-}>;
+export type ResponseLpListDto=CursorBasedResponse<Lp[]>;
 
+export type Comments={
+    id: number;
+  content: string;
+  lpId: number;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  author: Author;
+}
 
+export type ResponseCommentsListDto=CursorBasedResponse<Comments[]>;
 
 export type Author={
     id: number;

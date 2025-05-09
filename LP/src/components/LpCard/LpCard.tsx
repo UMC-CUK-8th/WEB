@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LpItems } from "../types/lp";
+import { Lp } from "../../types/lp";
 import { FaHeart } from "react-icons/fa";
 
 interface lpCardProps {
-    lp: LpItems;
+    lp: Lp;
 } 
 
 export default function LpCard({lp}:lpCardProps){

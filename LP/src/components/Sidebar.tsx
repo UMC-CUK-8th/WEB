@@ -5,7 +5,7 @@ const Sidebar = () => {
     const navigate=useNavigate();
 
     return (
-        <div  className="flex flex-col justify-between h-full w-50 p-6 bg-stone-900 ">
+        <div  className="flex flex-col justify-between w-50 p-6 bg-stone-900 ">
             <div className="flex flex-col gap-y-4 text-white">
                 
                 <div className="flex items-center gap-3 cursor-pointer  text-left w-20">

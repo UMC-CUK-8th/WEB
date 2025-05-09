@@ -5,10 +5,10 @@ import Sidebar from "../components/Sidebar";
 const HomeLayout=()=>{
 
     return (
-        <div className="h-screen flex flex-col">
+        <div className="flex flex-col h-screen">
             <Navbar/>
             
-            <main className="flex h-screen">
+            <main className="flex flex-1 overflow-hidden">
                 <Sidebar/>
                 <div className="flex-1 overflow-auto">
                 <Outlet />
