@@ -3,7 +3,6 @@ import { PAGINATION_ORDER } from "../../enums/common"
 import { getLpList } from "../../apis/lp"
 import { QUERY_KEY } from "../../constants/key"
 
-
 function useGetInfiniteLpList(
     limit: number,
     search: string,

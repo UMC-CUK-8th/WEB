@@ -34,10 +34,24 @@ export type Lp = {
     likes: Likes[];
 }
 
-export type LpDetail = Lp & {
+export type LpComment = {
+    id: number;
+    content: string;
+    lpId: number;
+    authorId: number;
+    createdAt: string;
+    updatedAt: string;
     author: Author;
+    nextCursor: number;
+    hasNext: boolean;
+}
+
+export type LpDetail = Lp & {
+    author: Author[];
 };
 
 export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
 export type ResponseLpDetailDto = CommonResponse<LpDetail>;
+
+export type ResponseLpCommentsDto = CursorBasedResponse<LpComment[]>;
