@@ -7,18 +7,15 @@ export type CommonResponse<T> = {
     data: T;
 };
 
-export type CursorBasedResponse<T>={
-    status: boolean;
-    statusCode: number;
-    message: string;
-    data: T;
-    nextCursor:number;
-    hasNext:boolean;
-}
+export type CursorBasedResponse<T>=CommonResponse<{
+   data:T;
+   nextCursor : number | null;
+   hasNext : boolean; 
+}>;
 
 
 
-export type PaginationDto = {
+export type PaginationDTO = {
     cursor?:number;
     limit ?: number;
     search?: string;

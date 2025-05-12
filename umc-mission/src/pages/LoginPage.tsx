@@ -88,7 +88,6 @@ const LoginPage = () => {
             onClick={handleGoogleLogin}
             >
             <div className="flex items-center justify-center gap-4">
-                <img src={"/image/google.png"} alt="google logo image"/>
                 <span>구글로그인</span>
             </div>
             </button>
