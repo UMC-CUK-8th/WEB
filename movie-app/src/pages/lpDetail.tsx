@@ -223,18 +223,52 @@ const LPDetail = () => {
         }
     };
 
-    const toggleLike = async () => {
-        if (!lpId) return;
-        try {
+    const toggleLikeMutation = useMutation({
+        mutationFn: async () => {
             if (isLiked) {
-            await unlikeLP(lpId);
+            await unlikeLP(lpId!);
             } else {
-            await likeLP(lpId);
+            await likeLP(lpId!);
             }
+        },
+
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ["lpDetail", lpId] });
+
+            const previousData = queryClient.getQueryData<LPDetail>(["lpDetail", lpId]);
+
+            // 캐시 직접 업데이트
+            queryClient.setQueryData<LPDetail>(["lpDetail", lpId], (old) => {
+            if (!old || !userId) return old;
+
+            const alreadyLiked = old.likes.some((like) => like.userId === userId);
+            const newLikes = alreadyLiked
+                ? old.likes.filter((like) => like.userId !== userId)
+                : [...old.likes, { id: Date.now(), userId, lpId: Number(lpId) }]; // 가짜 ID
+
+            return {
+                ...old,
+                likes: newLikes,
+            };
+            });
+
+            return { previousData };
+        },
+
+        onError: (_err, _variables, context) => {
+            if (context?.previousData) {
+            queryClient.setQueryData(["lpDetail", lpId], context.previousData);
+            }
+            alert("좋아요 실패, 이전 상태로 복원됐습니다.");
+        },
+
+        onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ["lpDetail", lpId] });
-        } catch (err) {
-            alert("좋아요 처리 중 오류가 발생했습니다.");
-        }
+        },
+    });
+
+    const toggleLike = async () => {
+        toggleLikeMutation.mutate();
     };
 
     useEffect(() => {

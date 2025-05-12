@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../api/axiosInstance";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FiTrash2, FiEdit } from "react-icons/fi";
 import defaultImage from "../assets/icon/defaultImage.png";
 
@@ -23,11 +23,12 @@ const MyPage = () => {
     const [name, setName] = useState("");
     const [bio, setBio] = useState("");
     const [avatar, setAvatar] = useState<string | null>(null);
-    const [email, setEmail] = useState("");
+    const [_email, setEmail] = useState("");
 
     const [showAvatarMenu, setShowAvatarMenu] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const avatarMenuRef = useRef<HTMLDivElement>(null);
+    const queryClient = useQueryClient();
 
     const uploadImage = async (base64: string): Promise<string> => {
         const blob = await (await fetch(base64)).blob();
@@ -50,10 +51,41 @@ const MyPage = () => {
 
     const mutation = useMutation({
         mutationFn: (body: { name: string; bio: string; avatar: string | null }) =>
-        api.patch("/v1/users", body),
+            api.patch("/v1/users", body),
+
+        // Optimistic update
+        onMutate: async (newData) => {
+            await queryClient.cancelQueries({ queryKey: ["userProfile"] });
+
+            const previousUser = queryClient.getQueryData<User>(["userProfile"]);
+
+            queryClient.setQueryData<User>(["userProfile"], (old) => {
+                if (!old) return old;
+                return {
+                    ...old,
+                    name: newData.name,
+                    bio: newData.bio,
+                    avatar: newData.avatar,
+                };
+            });
+
+            return { previousUser };
+        },
+
+        onError: (_err, _variables, context) => {
+            if (context?.previousUser) {
+            queryClient.setQueryData(["userProfile"], context.previousUser);
+            }
+            alert("업데이트 실패: 서버 오류");
+        },
+
         onSuccess: () => {
             alert("프로필이 수정되었습니다.");
             setIsEditing(false);
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ["userProfile"] });
         },
     });
 
