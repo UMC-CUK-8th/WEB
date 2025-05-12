@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import useGetLpDetail from "../hooks/queries/useGetLpDetail";
 import { Heart } from "lucide-react";
+import CommentSection from "../components/Comment/CommentSection";
+
 
 const LpDetailPage = () => {
     const { LPid } = useParams();
@@ -24,6 +26,11 @@ const LpDetailPage = () => {
     <button className="m-5">
       <Heart />
     </button>
+
+    <div className="w-full max-w-2xl">
+    {lp?.data.id && <CommentSection lpId={lp.data.id} />}
+
+      </div>
     </div>
     )
   };

@@ -24,8 +24,28 @@ export type Lp = {
     likes:Likes[];
 }
 
+export type Comment = {
+    id: number;
+    content: string;
+    lpId: number;
+    authorId: number;
+    createdAt: string;
+    updatedAt: string;
+    author: {
+      id: number;
+      name: string;
+      email: string;
+      bio: string | null;
+      avatar: string | null;
+      createdAt: string;
+      updatedAt: string;
+    }
+}
+
 export type ResponseLpListDTO=CursorBasedResponse<Lp[]>;
 export type ResponseLpDTO = CommonResponse<Lp>;
+export type ResponseCommentListDTO = CursorBasedResponse<Comment[]>;
+export type ResponseCommentDTO = CommonResponse<Comment>;
 export type RequestLpDTO = {
   lpId: number;
 };
