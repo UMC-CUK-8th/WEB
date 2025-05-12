@@ -105,7 +105,7 @@ const LPDetail = () => {
     const [isEditingLP, setIsEditingLP] = useState(false);
     const [editTitle, setEditTitle] = useState("");
     const [editContent, setEditContent] = useState("");
-    const [editThumbnail, setEditThumbnail] = useState("");
+    const [editThumbnail, setEditThumbnail] = useState<string | File>("");
     const [editTags, setEditTags] = useState<string[]>([]);
     const [newTagInput, setNewTagInput] = useState("");
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -174,29 +174,52 @@ const LPDetail = () => {
         }
     };
 
+    const handleThumbnailUpload = async (file: File): Promise<string> => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await api.post("/v1/uploads", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+
+        return res.data.data.imageUrl; // LP 등록/수정 시 이 URL 사용
+    };
+
     const handleSaveEditLP = async () => {
         try {
-        await api.patch(`/v1/lps/${lpId}`, {
-            title: editTitle,
-            content: editContent,
-            thumbnail: editThumbnail,
-            tags: editTags,
-        });
-        alert("수정 완료!");
-        setIsEditingLP(false);
-        queryClient.invalidateQueries({ queryKey: ["lpDetail", lpId] });
-        } catch {
-        alert("수정 실패!");
+            let uploadedThumbnailUrl = editThumbnail;
+
+            // 새로 업로드한 이미지가 File 객체인 경우
+            if (editThumbnail instanceof File) {
+                uploadedThumbnailUrl = await handleThumbnailUpload(editThumbnail);
+            }
+
+            await api.patch(`/v1/lps/${lpId}`, {
+                title: editTitle,
+                content: editContent,
+                thumbnail: uploadedThumbnailUrl,
+                tags: editTags,
+            });
+
+            alert("수정 완료!");
+            setIsEditingLP(false);
+            queryClient.invalidateQueries({ queryKey: ["lpDetail", lpId] });
+        } catch (err) {
+            alert("수정 실패!");
+            console.error("LP 수정 에러:", err);
         }
     };
 
     const handleDeleteLP = async () => {
         try {
-        await api.delete(`/v1/lps/${lpId}`);
-        alert("삭제 완료!");
-        window.location.href = "/";
-        } catch {
-        alert("삭제 실패!");
+            await api.delete(`/v1/lps/${lpId}`);
+            alert("삭제 완료!");
+            window.location.href = "/";
+        } catch (err: any) {
+            console.error("삭제 실패 응답:", err?.response?.data); // 상세 응답 보기
+            alert("삭제 실패: 서버 오류");
         }
     };
 
@@ -235,7 +258,7 @@ const LPDetail = () => {
     const isMyLP = userId === data.author.id;
 
     return (
-        <div className="bg-black min-h-screen py-10 px-4 text-white">
+        <div className="bg-black min-h-screen pt-20 px-4 text-white">
             <div className="max-w-3xl mx-auto">
                 {/* 사용자 정보 */}
                 <div className="flex justify-between items-center mb-6">
@@ -287,18 +310,18 @@ const LPDetail = () => {
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 if (file) {
-                                const reader = new FileReader();
-                                reader.onloadend = () => {
-                                    setEditThumbnail(reader.result as string);
-                                };
-                                reader.readAsDataURL(file);
+                                    setEditThumbnail(file);
                                 }
                             }}
                         />
                         <label htmlFor="thumbnail-upload" className="cursor-pointer">
                             <div className="w-96 h-96 rounded-full border-4 border-gray-800 overflow-hidden hover:opacity-80 transition">
                                 <img
-                                    src={editThumbnail || "/default-avatar.png"}
+                                    src={
+                                        typeof editThumbnail === "string"
+                                        ? editThumbnail
+                                        : URL.createObjectURL(editThumbnail)
+                                    }
                                     alt="LP Thumbnail"
                                     className="w-full h-full object-cover"
                                 />
@@ -400,7 +423,6 @@ const LPDetail = () => {
                         <span className={isLiked ? "text-red-500" : "text-gray-500"}>♥</span> {data.likes.length}
                     </button>
                 </div>
-
 
                 {/* 댓글 입력창 및 정렬 */}
                 <div className="bg-gray-900 p-4 rounded-lg mb-6">
