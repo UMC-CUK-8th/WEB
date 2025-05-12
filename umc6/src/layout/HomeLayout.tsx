@@ -3,6 +3,10 @@ import Footer from "../components/Footer.tsx";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { useEffect, useState } from "react";
+import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
+import { BsSearch } from "react-icons/bs";
+import { useInView } from "react-intersection-observer";
+import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 
 const HomeLayout = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

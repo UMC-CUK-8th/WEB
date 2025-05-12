@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getLpDetail } from "../apis/lp";
 import { FaHeart, FaEdit, FaTrash } from "react-icons/fa";
+import CommentSection from "../components/CommentCard/CommentSection";
 
 // LP 상세 정보를 가져오는 함수 (API 연동 필요)
 const fetchLpDetail = async (lpId: string) => {
@@ -60,6 +61,11 @@ const LpDetailPage = () => {
         <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 flex items-center gap-2">
           <FaTrash /> 삭제
         </button>
+      </div>
+
+      {/* 댓글 섹션 추가 */}
+      <div className="w-full max-w-2xl">
+        {lp?.id && <CommentSection lpId={lp.id} />}
       </div>
     </div>
   );

@@ -6,22 +6,23 @@ import {
 } from "react-router-dom";
 import HomeLayout from "./layout/HomeLayout";
 import HomePage from "./pages/HomePage";
-import NotFound from "./pages/NotFoundPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import MyPage from "./pages/MyPage";
-import GoogleLoginRedirectPage from "./pages/GoogleRedirectPage";
+import GoogleRedirectPage from "./pages/GoogleRedirectPage";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedLayout from "./layout/ProtectedLayout";
-import NotFoundPage from "./pages/NotFoundPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import LpDetailPage from "./pages/LpDetailPage"; // ✅ 상세 페이지 import
 
-//publicRoutes : 인증 없이 접근 가능한 라우트
+// publicRoutes: 인증 없이 접근 가능한 라우트
 const publicRoutes: RouteObject[] = [
   {
     path: "/",
     element: <HomeLayout />,
-    errorElement: <NotFound />,
-
+    errorElement: <NotFoundPage />,
     children: [
       {
         index: true,
@@ -37,13 +38,13 @@ const publicRoutes: RouteObject[] = [
       },
       {
         path: "v1/auth/google/callback",
-        element: <GoogleLoginRedirectPage />,
+        element: <GoogleRedirectPage />,
       },
     ],
   },
 ];
 
-//protectedRoutes: 인증이 필요한 라우트
+// protectedRoutes: 인증이 필요한 라우트
 const protectedRoutes: RouteObject[] = [
   {
     path: "/",
@@ -54,42 +55,33 @@ const protectedRoutes: RouteObject[] = [
         path: "my",
         element: <MyPage />,
       },
+      {
+        path: "lp/:lpId", // ✅ LP 상세 페이지 라우트 추가
+        element: <LpDetailPage />,
+      },
     ],
   },
 ];
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomeLayout />,
-    errorElement: <NotFound />,
+// createBrowserRouter에 두 라우트 그룹을 합쳐서 적용
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      {
-        path: "login",
-        element: <LoginPage />,
-      },
-      {
-        path: "signup",
-        element: <SignupPage />,
-      },
-      {
-        path: "my",
-        element: <MyPage />,
-      },
-    ],
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3,
+    },
   },
-]);
+});
 
 function App() {
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+    </QueryClientProvider>
   );
 }
 
