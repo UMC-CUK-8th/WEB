@@ -7,22 +7,18 @@ import { PAGINATION_ORDER } from "../enums/common";
 import { useEffect, useState } from "react";
 import CommentCard from "../components/CommentCard/CommentCard";
 import CommentCardSkeletonList from "../components/CommentCard/CommentCardSkeletonList";
-import { useIsFetching } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 
 const LpPage=()=>{
     const {id} = useParams();
     const numberId = Number(id);
     const {data,isPending, isError}=useGetLpDetail(numberId);
-    console.log("Received ID:", id);  // id 값이 제대로 전달되었는지 확인
-    console.log("Converted Number ID:", numberId);  // numberId 값 확인
+    
     console.log("Fetched Data:", data); // 데이터를 콘솔에서 확인
 
     const [oldnew,setOldnew]=useState(PAGINATION_ORDER.asc);
     const {data:comments,isFetching,isPending:commentIsPending,fetchNextPage,hasNextPage,isError:commentIsError}=useGetInfiniteCommentsList(numberId,3,oldnew);
-    console.log(comments?.pages);
-
-    console.log(comments);
+   
 
     const {ref,inView}=useInView({threshold:0,})
 
@@ -61,8 +57,9 @@ const LpPage=()=>{
                 <FaRegTrashAlt />
             </div>
         </div>
-        <div className="w-65 h-65 shadow-md flex items-center justify-center ">
-            <img src={data.data.thumbnail} className="w-50 h-50 object-cover rounded-full"/>
+        <div className="w-65 h-65 shadow-md flex items-center justify-center relative">
+            <img src={data.data.thumbnail} className="w-60 h-60 object-cover rounded-full animate-spin"/>
+            <div className="absolute w-8 h-8 rounded-full bg-gray-300   "></div>
         </div>
         <p className="w-150">{data.data.content}</p>
         {data.data.tags.map((tag) => (<span>#{tag.name}</span>))}

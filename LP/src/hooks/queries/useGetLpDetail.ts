@@ -5,11 +5,12 @@ import { QUERY_KEY } from "../../constants/key";
 
 function useGetLpDetail(lpId:number){
     return useQuery({
-        queryKey:[QUERY_KEY.lps,lpId],
+        queryKey:[QUERY_KEY.detail,lpId],
         queryFn:()=>
             getLpDetail(lpId),
         staleTime:1000*60*5, //5분 
         gcTime:1000*60*10,//10분 
+        
         
     });
 }

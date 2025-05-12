@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { BsList } from "react-icons/bs";
 import useGetMyInfo from "../hooks/queries/useGetInfo";
 
-const Navbar = () => {
+const Navbar = ({clickSidebar}:{clickSidebar:()=>void}) => {
     const navigate=useNavigate();
     const {accessToken,logout}=useAuth();
     const handleLogout=async()=>{
@@ -15,7 +15,7 @@ const Navbar = () => {
         <nav  className="flex items-center justify-between p-6 pl-10 bg-stone-900 ">
                 
                 <div className="flex items-center justify-center gap-x-4 ">
-                <BsList className="text-white text-2xl"/>
+                <BsList className="text-white text-2xl cursor-pointer" onClick={clickSidebar}/>
                 <span
                     className="text-pink-500 text-2xl font-bold cursor-pointer "
                     onClick={()=>navigate("/")}>
