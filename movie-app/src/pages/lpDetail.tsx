@@ -324,6 +324,7 @@ const LPDetail = () => {
                                     }
                                     alt="LP Thumbnail"
                                     className="w-full h-full object-cover"
+                                    style={{ animation: "spin 10s linear infinite" }}
                                 />
                             </div>
                         </label>
@@ -335,6 +336,7 @@ const LPDetail = () => {
                                 src={data.thumbnail}
                                 alt={data.title}
                                 className="w-full h-full object-cover"
+                                style={{ animation: "spin 10s linear infinite" }}
                             />
                         </div>
                     </div>
