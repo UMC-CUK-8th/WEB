@@ -21,6 +21,7 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const { getItem: getAccessTokenFromStorage, setItem: setAccessTokenInStorage, removeItem: removeAccessTokenFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const { getItem: getRefreshTokenFromStorage, setItem: setRefreshTokenInStorage, removeItem: removeRefreshTokenFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.refreshToken);
+  const { setItem: setUserNameInStorage, removeItem: removeUserNameFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
 
   const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromStorage());
   const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromStorage());
@@ -32,9 +33,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       if (data) {
         const newAccessToken = data.accessToken;
         const newRefreshToken = data.refreshToken;
+        const userName = data.name;
 
         setAccessTokenInStorage(newAccessToken);
         setRefreshTokenInStorage(newRefreshToken);
+        setUserNameInStorage(userName);
 
         setAccessToken(newAccessToken);
         setRefreshToken(newRefreshToken);
@@ -53,6 +56,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       await postLogout();
       removeAccessTokenFromStorage();
       removeRefreshTokenFromStorage();
+      removeUserNameFromStorage();
 
       setAccessToken(null);
       setRefreshToken(null);
