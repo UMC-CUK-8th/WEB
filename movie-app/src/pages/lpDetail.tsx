@@ -289,7 +289,7 @@ const LPDetail = () => {
     if (isLoading) return <div className="text-white">로딩 중...</div>;
     if (isError || !data) return <div className="text-red-500">데이터를 불러오는 데 실패했습니다.</div>;
 
-    const isMyLP = userId === data.author.id;
+    const isMyLP = Number(userId) === Number(data.author.id);
 
     return (
         <div className="bg-black min-h-screen pt-20 px-4 text-white">

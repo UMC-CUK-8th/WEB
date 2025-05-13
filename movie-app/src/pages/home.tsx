@@ -90,7 +90,7 @@ const HomePage = () => {
     }
 
     return (
-        <div className="bg-black min-h-screen py-6 px-4">
+        <div className="bg-black pt-20 min-h-screen py-6 px-4">
             <div className="max-w-screen-2xl mx-auto px-6">
                 <div className="flex justify-end mb-4 gap-2">
                     {["asc", "desc"].map((o) => (
