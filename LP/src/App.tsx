@@ -9,6 +9,9 @@ import MyPage from './pages/MyPage';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedLayout from './layouts/ProtectedLayout';
 import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import LpPage from './pages/LpPage';
 
 //publicRoutes : 인증 없이 접근 가능 라우트
 const publicRoutes:RouteObject[]=[
@@ -34,18 +37,31 @@ const protectedRoutes:RouteObject[]=[
     children:[{
       path:'my',
       element:<MyPage/>,
-    }]
+    },
+    {
+      path:'lp/:id',
+      element:<LpPage/>
+    }
+  ]
   }
 ]
 
 const router = createBrowserRouter([...publicRoutes,...protectedRoutes]);
 function App() {
   
-
+const queryClient= new QueryClient({
+  defaultOptions:{
+    queries:{
+      retry:3,
+    }}});
   return(
-    <AuthProvider>
-      <RouterProvider router={router}/>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router}/>
+      </AuthProvider>
+      
+      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} /> } {/*개발자모드일때만 켜지도록*/}
+    </QueryClientProvider>
   )
 }
 
