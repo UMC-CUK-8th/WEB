@@ -1,38 +1,87 @@
+import { useEffect, useState } from "react";
+import { useInView } from "react-intersection-observer";
+import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
+import { PAGINATION_ORDER } from "../enums/common";
+import LpCard from "../components/LpCard/LpCard";
+import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
+
 const HomePage = () => {
+  const [search, setSearch ] = useState("");
+  const [sortOrder, setSortOrder] = useState(PAGINATION_ORDER.desc);
+  // const { data } = useGetLpList({
+  //   search,
+  //   limit:50,
+  // });
+  
+  const { 
+    data:lps, 
+    isFetching, 
+    hasNextPage, 
+    isPending, 
+    fetchNextPage, 
+    isError 
+  } = useGetInfiniteLpList(1, search, sortOrder);
+
+  // ref, inView
+  // ref -> 특정한 HTML 요소를 감시할 수 있다.
+  // inView -> 그 요소가 화면에 보이면 true.
+  const { ref, inView } = useInView({
+    threshold: 0,
+  })
+
+  useEffect(() => {
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  if (isPending) {
+    return <div className={"mt-20"}>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div className={"mt-20"}>Error...</div>;
+  }
+
+  console.log(lps?.pages.map((page) => page.data.data));
+  // [[1, 2], [3, 4]].flat() => [1, 2, 3, 4]
+
+  const toggleSortOrder = () => {
+    setSortOrder(sortOrder === PAGINATION_ORDER.desc ? PAGINATION_ORDER.asc : PAGINATION_ORDER.desc);
+  };
+
   return (
-    <div>
-      <div className="bg-[#434343] w-full h-[400px] mb-32 flex items-center justify-center text-3xl font-bold">
-        오늘의 추천 영화
+    <div className="w-full overflow-x-hidden px-2">
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={toggleSortOrder}
+          className="bg-pink-500 text-white px-4 py-2 rounded-lg"
+        >
+          {sortOrder === PAGINATION_ORDER.desc ? "최신순" : "오래된순"}
+        </button>
+      </div>
+      <div className={"mt-4"}>
+        <input value={search} onChange={(e) => setSearch(e.target.value)} />
+        {/*{lps?.pages?.map((page) => console.log(page.data.data))}*/}
       </div>
 
-      <div className="mb-28 px-4">
-        <h2 className="text-3xl font-semibold mb-12">박스오피스 랭킹</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-[#434343] h-[150px] flex items-center justify-center"
-            >
-              #{idx + 1}
-            </div>
-          ))}
-        </div>
+      <div className={
+          "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        }
+      >
+        {isPending && <LpCardSkeletonList count={20}  />}
+        {lps?.pages
+          ?.map((page) => page.data.data)
+          ?.flat()
+          ?.map((lp) => (
+            <LpCard key={lp.id} lp={lp} />
+          ))
+        }
+        {isFetching && <LpCardSkeletonList count={20} />}
       </div>
-      <div className="mb-24 px-4">
-        <h2 className="text-3xl font-semibold mb-12">카테고리별 인기작</h2>
-        <div className="flex overflow-x-scroll space-x-4 no-scrollbar">
-          {Array.from({ length: 10 }).map((_, idx) => (
-            <div
-              key={idx}
-              className="bg-[#434343] w-[200px] h-[300px] shrink-0 flex items-center justify-center"
-            >
-              콘텐츠 {idx + 1}
-            </div>
-          ))}
-        </div>
-      </div>
+      <div ref={ref} className="h-2"></div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage;
+export default HomePage;  
