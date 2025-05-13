@@ -46,6 +46,10 @@ export type LpComment = {
     hasNext: boolean;
 }
 
+export type RequestLpDto = {
+    lpId: number;
+};
+
 export type LpDetail = Lp & {
     author: Author[];
 };
@@ -55,3 +59,9 @@ export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 export type ResponseLpDetailDto = CommonResponse<LpDetail>;
 
 export type ResponseLpCommentsDto = CursorBasedResponse<LpComment[]>;
+
+export type ResponseLikeLpDto = CommonResponse<{
+    id: number;
+    useId: number;
+    lpId: number;
+}>;
