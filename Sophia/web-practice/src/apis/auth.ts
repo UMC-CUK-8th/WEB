@@ -28,3 +28,10 @@ export const postLogout = async () => {
 
   return data;
 };
+
+// 회원탈퇴 api
+export const deleteAuth = async () => {
+  const { data } = await axiosInstance.delete('/v1/users');
+
+  return data;
+};
