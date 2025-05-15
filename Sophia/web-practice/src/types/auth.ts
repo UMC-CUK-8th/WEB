@@ -33,7 +33,9 @@ export type ResponseSigninDto = CommonResponse<{
 }>;
 
 // 내정보 조회
-export type ResponseMyTypeDto = CommonResponse<{
+export type ResponseMyTypeDto = CommonResponse<ResponseMyInfoDto>;
+
+export type ResponseMyInfoDto = {
   id: number;
   name: string;
   email: string;
@@ -41,4 +43,4 @@ export type ResponseMyTypeDto = CommonResponse<{
   avatar: string | null;
   createdAt: Date;
   updatedAt: Date;
-}>;
+};

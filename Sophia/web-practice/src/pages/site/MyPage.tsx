@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { getMyInfo } from '../../apis/auth';
-import { ResponseMyTypeDto } from '../../types/auth';
+import { useRef, useState } from 'react';
 import { Settings } from 'lucide-react';
 import { PAGINATION_ORDER } from '../../enums/common';
 import useGetMyLpList from '../../hooks/queries/useGetMyLpList';
 import LpCard from '../../components/Site/LpCard';
 import LpCardSkeletonList from '../../components/Site/LpCardSkeletonList';
 import useUpdateMyInfo from '../../hooks/mutations/useUpdateMyInfo';
+import useGetMyInfo from '../../hooks/queries/useGetMyInfo';
+import { useAuth } from '../../context/AuthContext';
 
 export default function MyPage() {
+  const { accessToken } = useAuth();
   const [order, setorder] = useState(PAGINATION_ORDER.desc);
-  const [data, setData] = useState<ResponseMyTypeDto>();
   const [isEditing, setIsEditing] = useState(false);
   const [editingName, setEditingName] = useState('');
   const [editiingBio, setEditingBio] = useState('');
@@ -19,27 +19,20 @@ export default function MyPage() {
 
   const { data: lps, isPending, isError } = useGetMyLpList({ order });
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await getMyInfo();
-        setData(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getData();
-  }, []);
+  const { data: me } = useGetMyInfo(accessToken);
 
   const { mutate: updateMyInfoMutate } = useUpdateMyInfo();
 
   const handleUpdateMyInfo = () => {
-    updateMyInfoMutate({
-      name: editingName,
-      bio: editiingBio,
-      // avatar: editingAvatar,
-    });
+    updateMyInfoMutate(
+      {
+        name: editingName,
+        bio: editiingBio,
+        // avatar: editingAvatar,
+      },
+      // 수정 상태 = false로 줘서 리렌더링 발생 가능하도록 추가
+      { onSettled: () => setIsEditing(false) }
+    );
   };
 
   const handleClickEdit = (name: string, bio: string, avatar: string) => {
@@ -86,14 +79,14 @@ export default function MyPage() {
               {editingAvatar ? <img src={editingAvatar} alt='LP 이미지' className='rounded-full w-[120px] h-[120px]' /> : <div className='rounded-full w-[100px] h-[100px] bg-gray-300' aria-label='기본 프로필'></div>}
             </button>
           </div>
-        ) : data?.data.avatar ? (
-          <img src={data.data.avatar} alt={data.data.name} className='rounded-full w-[100px] h-[100px]' />
+        ) : me?.avatar ? (
+          <img src={me?.avatar} alt={me?.name} className='rounded-full w-[100px] h-[100px]' />
         ) : (
           <div className='rounded-full w-[100px] h-[100px] bg-gray-300' aria-label='기본 프로필'></div>
         )}
         <div className='text-white flex flex-col justify-center'>
           <div className='flex justify-between'>
-            {isEditing ? <input type='text' className='border-2 border-white rounded-md px-2 text-2xl w-[70%] text-white' value={editingName} onChange={(e) => setEditingName(e.target.value)} required /> : <p className='text-2xl'>{data?.data.name}</p>}
+            {isEditing ? <input type='text' className='border-2 border-white rounded-md px-2 text-2xl w-[70%] text-white' value={editingName} onChange={(e) => setEditingName(e.target.value)} required /> : <p className='text-2xl'>{me?.name}</p>}
             {isEditing ? (
               <div className='flex gap-2'>
                 <button type='button' className='cursor-pointer border-2 border-white rounded-md p-1' onClick={() => setIsEditing(false)}>
@@ -104,13 +97,13 @@ export default function MyPage() {
                 </button>
               </div>
             ) : (
-              <button type='button' onClick={() => handleClickEdit(data?.data.name ?? '', data?.data.bio ?? '', data?.data.avatar ?? '')}>
+              <button type='button' onClick={() => handleClickEdit(me?.name ?? '', me?.bio ?? '', me?.avatar ?? '')}>
                 <Settings />
               </button>
             )}
           </div>
-          {isEditing ? <input type='text' className='border-2 border-white rounded-md px-2 w-[80%] text-white mt-2' value={editiingBio} onChange={(e) => setEditingBio(e.target.value)} /> : <p>{data?.data.bio}</p>}
-          <p>{data?.data.email}</p>
+          {isEditing ? <input type='text' className='border-2 border-white rounded-md px-2 w-[80%] text-white mt-2' value={editiingBio} onChange={(e) => setEditingBio(e.target.value)} /> : <p>{me?.bio}</p>}
+          <p>{me?.email}</p>
         </div>
       </div>
 

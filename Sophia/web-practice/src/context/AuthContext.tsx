@@ -8,6 +8,8 @@ import { useMutation } from '@tanstack/react-query';
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
+  userName: string | null;
+  setUserName: (name: string | null) => void;
   login: (signinData: RequestSigninDto) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -15,6 +17,8 @@ interface AuthContextType {
 export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
   refreshToken: null,
+  userName: null,
+  setUserName: () => {},
   login: async () => {},
   logout: async () => {},
 });
@@ -22,10 +26,11 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const { getItem: getAccessTokenFromStorage, setItem: setAccessTokenInStorage, removeItem: removeAccessTokenFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
   const { getItem: getRefreshTokenFromStorage, setItem: setRefreshTokenInStorage, removeItem: removeRefreshTokenFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.refreshToken);
-  const { setItem: setUserNameInStorage, removeItem: removeUserNameFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
+  const { setItem: setUserNameInStorage, getItem: getUserNameFromStorage, removeItem: removeUserNameFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
 
   const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromStorage());
   const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromStorage());
+  const [userName, setUserName] = useState<string | null>(getUserNameFromStorage());
 
   // const _login = async (signinData: RequestSigninDto) => {
   //   try {
@@ -66,6 +71,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
         setAccessToken(newAccessToken);
         setRefreshToken(newRefreshToken);
+        setUserName(userName);
 
         alert('로그인 성공');
         window.location.href = '/my';
@@ -121,7 +127,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     await logoutMutation.mutateAsync();
   };
 
-  return <AuthContext.Provider value={{ accessToken, refreshToken, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ accessToken, refreshToken, userName, setUserName, login, logout }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
