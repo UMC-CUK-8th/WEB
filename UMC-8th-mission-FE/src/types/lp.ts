@@ -3,13 +3,13 @@ import { CommonResponse, CursorBasedResponse } from "./common";
 export type Tag = {
     id: number;
     name: string;
-}
+};
 
 export type Likes = {
-    id: number;
+    id?: number;
     userId: number;
-    lpid: number;
-}
+    lpId: number;
+};
 
 export type Author = {
     id: number;
@@ -32,7 +32,7 @@ export type Lp = {
     updatedAt: Date;
     tags: Tag[];
     likes: Likes[];
-}
+};
 
 export type LpComment = {
     id: number;
@@ -44,7 +44,7 @@ export type LpComment = {
     author: Author;
     nextCursor: number;
     hasNext: boolean;
-}
+};
 
 export type RequestLpDto = {
     lpId: number;

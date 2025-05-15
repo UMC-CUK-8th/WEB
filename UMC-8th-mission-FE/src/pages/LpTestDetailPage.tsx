@@ -1,35 +1,37 @@
-import { useParams } from "react-router-dom"
-import { useGetLpDetail } from "../hooks/queries/useGetLpDetail";
-import { Heart } from "lucide-react";
-import useGetMyInfo from "../hooks/queries/useGetMyInfo";
-import { useAuth } from "../context/AuthContext";
+// import { useParams } from "react-router-dom"
+// import { useGetLpDetail } from "../hooks/queries/useGetLpDetail";
+// import { Heart } from "lucide-react";
+// import useGetMyInfo from "../hooks/queries/useGetMyInfo";
+// import { useAuth } from "../context/AuthContext";
 
-const LpTestDetailPage = () => {
-  const { lpId } = useParams();
-  const { accessToken } = useAuth();
-  const { 
-    data:lp,
-    isPending,
-    isError, 
-  } = useGetLpDetail({ lpId: Number(lpId) });
+// const LpTestDetailPage = () => {
+//   const { lpId } = useParams();
+//   const { accessToken } = useAuth();
+//   const { 
+//     data:lp,
+//     isPending,
+//     isError, 
+//   } = useGetLpDetail({ lpId: Number(lpId) });
 
-  const { data: me } = useGetMyInfo(accessToken);
+//   const { data: me } = useGetMyInfo(accessToken);
 
-  if (isPending && isError) {
-    return <></>;
-  }
+//   const isLiked = lp?.data.likes.some((like) => like.userId === me?.data.id);
 
-  return (
-    <div className={"mt-12"}>
-      <h1>{lp?.data.title}</h1>
-      <img src={lp?.data.thumbnail} alt={lp?.data.title} />
-      <p>{lp?.data.content}</p>
+//   if (isPending && isError) {
+//     return <></>;
+//   }
 
-      <button>
-        <Heart />
-      </button>
-    </div>
-  )
-}
+//   return (
+//     <div className={"mt-12"}>
+//       <h1>{lp?.data.title}</h1>
+//       <img src={lp?.data.thumbnail} alt={lp?.data.title} />
+//       <p>{lp?.data.content}</p>
 
-export default LpTestDetailPage
+//       <button>
+//         <Heart />
+//       </button>
+//     </div>
+//   )
+// }
+
+// export default LpTestDetailPage

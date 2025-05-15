@@ -12,7 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import HomeLayout from './layouts/HomeLayout';
 import LpDetailPage from './pages/LpDetailPage';
-import LpTestDetailPage from './pages/LpTestDetailPage';
+// import LpTestDetailPage from './pages/LpTestDetailPage';
 
 // publicRoutes: 인증 없이 접근 가능한 라우트
 const publicRoutes:RouteObject[] = [
@@ -25,7 +25,7 @@ const publicRoutes:RouteObject[] = [
       { path: 'login', element: <LoginPage /> }, 
       { path: 'signup', element: <SignupPage /> },
       { path: 'v1/auth/google/callback', element: <GoogleLoginRedirectPage /> },
-      { path: 'lps/:lpId', element:<LpTestDetailPage /> }
+      // { path: 'lps/:lpId', element:<LpTestDetailPage /> }
     ],
   }
 ];
