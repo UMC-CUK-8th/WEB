@@ -2,15 +2,19 @@ import {useNavigate} from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { BsList } from "react-icons/bs";
 import useGetMyInfo from "../hooks/queries/useGetInfo";
+import usePostSignout from "../hooks/mutations/usePostSignout";
 
 const Navbar = ({clickSidebar}:{clickSidebar:()=>void}) => {
     const navigate=useNavigate();
-    const {accessToken,logout}=useAuth();
+    const {accessToken}=useAuth();
+    const {mutate}=usePostSignout();
+
     const handleLogout=async()=>{
-        await logout();
+        mutate();
         navigate("/");
     };
-    const {data}=useGetMyInfo();
+
+    const {data}=useGetMyInfo(accessToken);
     return (
         <nav  className="flex items-center justify-between p-6 pl-10 bg-stone-900 ">
                 

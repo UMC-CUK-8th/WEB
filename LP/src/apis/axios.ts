@@ -3,7 +3,7 @@ import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { MdOutlineWrongLocation } from "react-icons/md";
 
-interface CustominternalAxiosRequestConfig extends InternalAxiosRequestConfig{
+interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig{
   _retry?:boolean;//요청 재시도 여부 나타내는 플래그
 }
 
@@ -17,10 +17,10 @@ export const axiosInstance = axios.create({
   
 
   //요청 인터셉터: 모든 요청 전에 accessToken을 Authorization 헤더에 추가한다.
-  axiosInstance.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
     const {getItem}=useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
     const accessToken=getItem();//localStorage에서 accessToken을 가져온다. 
-    
+
     //accessToken이 존재하면 Authorization 헤더에 Bearer 토큰 형식으로 추가한다. 
     if (accessToken) {
       config.headers=config.headers||{};
@@ -40,14 +40,14 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
   (response)=>response, //정상 응답 그대로 반환 
   async(error)=>{
-    const originalRequest:CustominternalAxiosRequestConfig=error.config;
+    const originalRequest:CustomInternalAxiosRequestConfig=error.config;
 
     //401에러면서 아직 재시도하지않는 요청 경우 처리 
     if (error.response&&error.response.status===401&&!originalRequest._retry
 
     ){
       //refresh 엔드포인트 401 에러가 발생한 경우(unauthorized), 중복 시도 방지를 위해 로그아웃 처리 
-      if(originalRequest.url==='v1/auth/refresh'){
+      if(originalRequest.url==='/v1/auth/refresh'){
         const{removeItem:removeAccessToken}=useLocalStorage(
           LOCAL_STORAGE_KEY.accessToken,
         );
@@ -92,7 +92,7 @@ axiosInstance.interceptors.response.use(
         })()
           .catch((error)=>{
             const{removeItem:removeAccessToken}=useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
-            const{removeItem:removeRefreshToken}=useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+            const{removeItem:removeRefreshToken}=useLocalStorage(LOCAL_STORAGE_KEY.refreshToken);
             removeAccessToken();
             removeRefreshToken();
           }).finally(()=>{

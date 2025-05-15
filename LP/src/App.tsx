@@ -39,21 +39,24 @@ const protectedRoutes:RouteObject[]=[
       element:<MyPage/>,
     },
     {
-      path:'lp/:id',
+      path:'lp/:lpId',
       element:<LpPage/>
     }
   ]
   }
 ]
 
-const router = createBrowserRouter([...publicRoutes,...protectedRoutes]);
-function App() {
-  
-const queryClient= new QueryClient({
+export const queryClient= new QueryClient({
   defaultOptions:{
     queries:{
       retry:3,
     }}});
+    
+const router = createBrowserRouter([...publicRoutes,...protectedRoutes]);
+function App() {
+  
+
+
   return(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>

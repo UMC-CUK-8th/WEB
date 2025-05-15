@@ -8,7 +8,7 @@ import { QUERY_KEY } from "../../constants/key";
 function useGetInfiniteCommentsList(lpId:number,limit:number,order:PAGINATION_ORDER){
     return useInfiniteQuery({
         queryFn:({pageParam})=>getCommentsList({cursor:pageParam,lpId,limit,order}),
-        queryKey:[QUERY_KEY.comment,order],
+        queryKey:[QUERY_KEY.comment,order,lpId],
         initialPageParam:0,
         getNextPageParam:(lastPage)=>{
 
