@@ -15,7 +15,7 @@ const LpLikeButton = ({
 }: LpLikeButtonProps) => (
   <div className="flex justify-center items-center space-x-4 text-lg">
     <button onClick={isLiked ? onDeleteClick:onClick}>
-      <Heart color={isLiked ? "red": "black"} fill={isLiked ? "red": "transparent"}/>
+      <Heart color={isLiked ? "red": "#fdfdfd"} fill={isLiked ? "red": "transparent"}/>
     </button>
 
     <div

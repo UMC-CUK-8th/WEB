@@ -25,7 +25,7 @@ const publicRoutes:RouteObject[] = [
       { path: 'login', element: <LoginPage /> }, 
       { path: 'signup', element: <SignupPage /> },
       { path: 'v1/auth/google/callback', element: <GoogleLoginRedirectPage /> },
-      // { path: 'lps/:lpId', element:<LpTestDetailPage /> }
+      // { path: 'lps/:lpId', element:<LpDetailPage /> }
     ],
   }
 ];
@@ -42,7 +42,7 @@ const protectedRoutes:RouteObject[] = [
         element: <MyPage />,
       },
       { 
-        path: 'lp/:id', 
+        path: 'lp/:lpId', 
         element: <LpDetailPage /> 
       }, 
     ],

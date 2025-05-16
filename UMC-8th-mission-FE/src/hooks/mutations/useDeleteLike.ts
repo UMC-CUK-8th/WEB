@@ -62,7 +62,7 @@ function useDeleteLike() {
 
         // 서버 상태 동기화
         // onSettled는 API 요청이 끝난 후 (성공하든 실패하든 실행)
-        onSettled: async (data, error, variables, context) => {
+        onSettled: async (_data, _error, variables, _context) => {
             await queryClient.invalidateQueries({
                 queryKey: [QUERY_KEY.lps, variables.lpId],
             });
