@@ -145,7 +145,7 @@ const LpPage=()=>{
             <img src={lp.data.thumbnail} className="w-60 h-60 object-cover rounded-full animate-spin"/>
             <div className="absolute w-8 h-8 rounded-full bg-gray-300   "></div>
         </div>
-        {!startEdit ? (<p className="w-150 h-8">{lp.data.content}</p>):(<input type="text" value={lpContent} onChange={(e)=>setLpContent(e.target.value)} className="w-150 h-10 pl-2 rounded-md border border-gray-500 mb-6"/>)}
+        {!startEdit ? (<p className="w-150">{lp.data.content}</p>):(<input type="text" value={lpContent} onChange={(e)=>setLpContent(e.target.value)} className="w-150 h-10 pl-2 rounded-md border border-gray-500 mb-6"/>)}
         {startEdit?(
             <>
             <div className="w-full flex">

@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { BsList } from "react-icons/bs";
 import useGetMyInfo from "../hooks/queries/useGetInfo";
 import usePostSignout from "../hooks/mutations/usePostSignout";
+import { useEffect } from "react";
 
 const Navbar = ({clickSidebar}:{clickSidebar:()=>void}) => {
     const navigate=useNavigate();
@@ -15,6 +16,7 @@ const Navbar = ({clickSidebar}:{clickSidebar:()=>void}) => {
     };
 
     const {data}=useGetMyInfo(accessToken);
+    useEffect(()=>{},[data?.data.name])
     return (
         <nav  className="flex items-center justify-between p-6 pl-10 bg-stone-900 ">
                 
