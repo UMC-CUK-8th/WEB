@@ -11,15 +11,16 @@ import { useAuth } from "../context/AuthContext";
 import useGetMyInfo from "../hooks/queries/useGetMyInfo";
 import usePostLike from "../hooks/mutations/usePostLike";
 import useDeleteLike from "../hooks/mutations/useDeleteLike";
+import AddLpModal from "../components/Modal/AddLpModal";
 
 const LpDetailPage = () => {
   const { lpId } = useParams();
   const { accessToken } = useAuth();
-  const { 
-    data:lp,
-    isLoading,
-    isError, 
-  } = useGetLpDetail({ lpId: Number(lpId) });
+  const { data:lp, isLoading, isError } = useGetLpDetail({ lpId: Number(lpId) });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   const { data: me } = useGetMyInfo(accessToken);
   // mutate -> 비동기 요청을 실행하고, 콜백 함수를 이용해서 후속 작업을 처리함.
@@ -80,7 +81,12 @@ const LpDetailPage = () => {
           {showComments && <CommentList lpId={lp.data.id} />}
         </div>
 
-        <FloatingAddButton />
+        <FloatingAddButton onClick={handleOpenModal} />
+        {isModalOpen && (
+          <AddLpModal
+            onClose={handleCloseModal}
+          />
+        )}
       </div>
     </div>
   );

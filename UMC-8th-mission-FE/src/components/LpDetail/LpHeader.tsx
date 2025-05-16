@@ -5,11 +5,18 @@ const LpHeader = ({ lp }: { lp: any }) => {
     <div className="flex justify-between items-start">
       <div>
         <div className="flex items-center space-x-2">
-          <img
-            src={lp.author.avatar || "/images/profile.png"}
-            alt="작성자"
-            className="w-6 h-6 rounded-full"
-          />
+          {lp.author.avatar ? (
+            <img
+              src={lp.author.avatar}
+              alt="작성자"
+              className="w-6 h-6 rounded-full"
+            />
+          ) : (
+            <div
+              className="w-6 h-6 rounded-full bg-gray-400"
+              aria-label="아바타 없음"
+            />
+          )}
           <span className="text-sm font-medium">{lp.author.name}</span>
         </div>
         <h2 className="text-xl font-bold mt-2">{lp.title}</h2>

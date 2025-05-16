@@ -61,7 +61,7 @@ const MyPage = () => {
       {
         name,
         bio,
-        avatar, // 서버에 base64나 실제 URL을 보내야 함
+        avatar, 
       },
       {
         onSuccess: (updatedData) => {
@@ -93,25 +93,27 @@ const MyPage = () => {
           />
         )}
 
-        <div className="flex items-center space-x-6 mb-8 cursor-pointer" onClick={handleAvatarClick}>
-          {avatar ? (
-            <img
-              src={avatar}
-              alt="프로필 사진"
-              className="w-28 h-28 rounded-full object-cover"
+        <div className="flex items-center space-x-6 mb-8" >
+          <div onClick={handleAvatarClick} className="cursor-pointer" >
+            {avatar ? (
+              <img
+                src={avatar}
+                alt="프로필 사진"
+                className="w-28 h-28 rounded-full object-cover"
+              />
+            ) : (
+              <div className="w-28 h-28 rounded-full bg-gray-400 flex items-center justify-center text-white text-4xl font-bold">
+                {name ? name[0] : "?"}
+              </div>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
             />
-          ) : (
-            <div className="w-28 h-28 rounded-full bg-gray-400 flex items-center justify-center text-white text-4xl font-bold">
-              {name ? name[0] : "?"}
-            </div>
-          )}
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-          />
+          </div>
 
           <div className="flex flex-col flex-1 mr-4">
             {editMode ? (

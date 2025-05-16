@@ -42,8 +42,8 @@ export type LpComment = {
     createdAt: string;
     updatedAt: string;
     author: Author;
-    nextCursor: number;
-    hasNext: boolean;
+    nextCursor?: number;
+    hasNext?: boolean;
 };
 
 export type RequestLpDto = {
@@ -54,9 +54,13 @@ export type LpDetail = Lp & {
     author: Author[];
 };
 
+export type LpWithout = Omit<Lp, "tags" | "likes">;
+
 export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
 export type ResponseLpDetailDto = CommonResponse<LpDetail>;
+
+export type ResponseLpDto = CommonResponse<LpWithout[]>;
 
 export type ResponseLpCommentsDto = CursorBasedResponse<LpComment[]>;
 
@@ -65,3 +69,12 @@ export type ResponseLikeLpDto = CommonResponse<{
     useId: number;
     lpId: number;
 }>;
+
+export interface CreateLpRequest {
+  title: string;
+  content: string;
+  thumbnail: string;
+  tags: string[];
+  published: boolean;
+}
+

@@ -1,5 +1,5 @@
 import { PaginationDto } from "../types/common";
-import { ResponseLpListDto, ResponseLpDetailDto, ResponseLpCommentsDto, RequestLpDto, ResponseLikeLpDto } from "../types/lp"; 
+import { ResponseLpListDto, ResponseLpDetailDto, RequestLpDto, ResponseLikeLpDto, ResponseLpDto, CreateLpRequest } from "../types/lp"; 
 import { axiosInstance } from "./axios";
 
 // LP 목록 조회
@@ -20,17 +20,6 @@ export const getLpDetail = async (
   return data;
 };
 
-// LP 댓글 목록 조회
-export const getLpComments = async (
-  lpId: number,
-  paginationDto: PaginationDto
-): Promise<ResponseLpCommentsDto> => {
-  const { data } = await axiosInstance.get(`/v1/lps/${lpId}/comments`, {
-    params: paginationDto,
-  });
-  return data;
-};
-
 export const postLike = async ({ 
   lpId 
 }: RequestLpDto): Promise<ResponseLikeLpDto> => {
@@ -46,3 +35,12 @@ export const deleteLike = async ({
 
   return data;
 }
+
+// Lp 생성
+export const postLp = async (
+  lpData: CreateLpRequest
+): Promise<ResponseLpDto> => {
+  const response = await axiosInstance.post("/v1/lps", lpData);
+  return response.data;
+};
+
