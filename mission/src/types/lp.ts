@@ -11,7 +11,7 @@ export type Likes={
     lpId:number;
 }
 
-export type LpItems={
+export type Lp={
         id:number;
         title:string;
         content:string;
@@ -23,38 +23,47 @@ export type LpItems={
         tags:Tag[];
         likes:Likes[];
 }
-export type ResponseLpListDto=CursorBasedResponse<{
-    nextCursor: any;
-    hasNext: any;
-    data:LpItems[];
-}>;
-
-
+export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
 
 export type Author={
-    id: number;
-    name: string;
-    email: string;
-    bio: string;
-    avatar: string;
-    createdAt: string;
-    updatedAt: string;
+  id: number;
+  name: string;
+  email: string;
+  bio: string;
+  avatar: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
-export type LpDetailItems={
-    id: number;
-    title: string;
-    content: string;
-    thumbnail: string;
-    published: boolean;
-    authorId: number;
-    createdAt: string;
-    updatedAt: string;
-    author: Author;
-    tags: Tag[];
-    likes: Likes[];
-}
-export type ResponseLpDetailDto=CursorBasedResponse<{
-    likes: any;
-    data:LpDetailItems;
-}>;
+export type LpDetail = {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  published: boolean;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  tags: Tag[];
+  likes: Likes[];
+  author: Author;
+};
+
+export type ResponseLpDetailDto = {
+  status: boolean;
+  statusCode: number;
+  message: string;
+  data: LpDetail;
+};
+
+export type Comment = {
+  id: number;
+  content: string;
+  lpId: number;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  author: Author;
+};
+
+export type ResponseLpCommentListDto = CursorBasedResponse<Comment[]>;
