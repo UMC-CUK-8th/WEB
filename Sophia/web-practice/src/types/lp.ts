@@ -1,4 +1,4 @@
-import { CursorBasedResponse } from './common';
+import { CommonResponse, CursorBasedResponse, CursorResponse } from './common';
 
 export type Tag = {
   id: number;
@@ -68,3 +68,66 @@ export type Comment = {
 };
 
 export type ResponseLpCommentListDto = CursorBasedResponse<Comment[]>;
+
+export type ResponseLpLikeDto = CommonResponse<{
+  id: number;
+  userId: number;
+  lpId: number;
+}>;
+
+export type RequestCreateLpDto = {
+  title: string;
+  content: string;
+  thumbnail?: string;
+  tags: string[];
+  published: boolean;
+};
+
+export type ResponseCreateLpDto = CursorResponse<{
+  id: string;
+  title: string;
+  content: string;
+  thumbnail?: string;
+  published: boolean;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}>;
+
+export type ResponseDeleteLp = CursorResponse<boolean>;
+
+export type ResponseCreateCommentDto = {
+  id: number;
+  content: string;
+  lpId: number;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  author: Author;
+};
+
+export type ResponseDeleteCommentDto = CursorResponse<{
+  message: string;
+}>;
+
+export type ResponseUpdateCommentDto = CursorResponse<ResponseCreateCommentDto>;
+
+export type RequestUpdateLpDetailDto = RequestCreateLpDto & {
+  lpId: number | null;
+};
+
+export type ReponseUpdateLpDetailDto = CursorResponse<{
+  id: string;
+  title: string;
+  content: string;
+  thumbnail?: string;
+  published: boolean;
+  authorId: number;
+  createdAt: Date;
+  updatedAt: Date;
+  tags: Tag[];
+}>;
+
+export type ResponseMyLpListDto = CursorBasedResponse<Lp[]>;
+
+export type ResponseUpdateMyInfoDto = CursorResponse<Author>;

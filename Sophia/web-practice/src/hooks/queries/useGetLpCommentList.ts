@@ -5,12 +5,11 @@ import { getLpCommentList } from '../../apis/lp';
 
 function useGetCommentList({ limit, order }: PaginationDto, lpId: string | undefined) {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEY.lpComment, order],
+    queryKey: [QUERY_KEY.lpComment, order, lpId],
     queryFn: ({ pageParam }) => getLpCommentList({ cursor: pageParam, limit, order }, lpId),
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
       console.log(lastPage, allPages);
-
       return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
     },
   });

@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { LOCAL_STORAGE_KEY } from '../../constants/key';
 import Menu from '../../assets/menu.svg';
 
 interface NavbarProps {
@@ -11,11 +9,8 @@ interface NavbarProps {
 }
 
 export default function Navbar({ isMenuOpen, setIsMenuOpen }: NavbarProps) {
-  const { accessToken } = useAuth();
+  const { accessToken, userName, logout } = useAuth();
   const naviagte = useNavigate();
-  const { logout } = useAuth();
-  const { getItem } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
-  const userName = getItem();
 
   const handleLogout = async () => {
     await logout();
