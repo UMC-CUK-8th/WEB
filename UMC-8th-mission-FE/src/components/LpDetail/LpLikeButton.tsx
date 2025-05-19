@@ -1,26 +1,22 @@
-import { MessageCircle } from "lucide-react"; // 말풍선 아이콘
+import { Heart, MessageCircle } from "lucide-react"; // 말풍선 아이콘
 
 interface LpLikeButtonProps {
-  isLiked: boolean;
-  likesCount: number;
+  isLiked?: boolean;
   onClick: () => void;
+  onDeleteClick: () => void;
   onToggleComments: () => void;
 }
 
 const LpLikeButton = ({
   isLiked,
-  likesCount,
   onClick,
+  onDeleteClick,
   onToggleComments,
 }: LpLikeButtonProps) => (
   <div className="flex justify-center items-center space-x-4 text-lg">
-    <div
-      className="flex items-center text-pink-500 space-x-1 cursor-pointer"
-      onClick={onClick}
-    >
-      <span className="text-2xl">{isLiked ? "❤️" : "🤍"}</span>
-      <span>{likesCount}</span>
-    </div>
+    <button onClick={isLiked ? onDeleteClick:onClick}>
+      <Heart color={isLiked ? "red": "#fdfdfd"} fill={isLiked ? "red": "transparent"}/>
+    </button>
 
     <div
       className="flex items-center text-white space-x-1 cursor-pointer"

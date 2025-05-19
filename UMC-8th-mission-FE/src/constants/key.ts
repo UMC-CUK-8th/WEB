@@ -5,6 +5,6 @@ export const LOCAL_STORAGE_KEY = {
 
 export const QUERY_KEY = {
     lps: "lps",
-    lpDetail: (id: number) => ["lp", id], 
+    myInfo: "myInfo",
     lpComments: (lpId: number) => ["lp-comments", lpId],
 }

@@ -3,56 +3,16 @@ import { useInView } from "react-intersection-observer";
 import { PAGINATION_ORDER } from "../../enums/common";
 import useGetInfiniteLpComments from "../../hooks/queries/useInfiniteComment";
 import CommentSkeletonList from "./CommentSkeletonList";
-
-const CommentInput = ({ onSubmit }: { onSubmit: (content: string) => void }) => {
-  const [content, setContent] = useState("");
-
-  const handleSubmit = () => {
-    if (!content.trim()) return;
-    onSubmit(content.trim());
-    setContent("");
-  };
-
-  return (
-    <div className="flex items-center space-x-2 mt-4 border-t border-gray-600 pt-3">
-      <img
-        src="/images/profile.png"
-        alt="내 프로필"
-        className="w-8 h-8 rounded-full"
-      />
-      <input
-        type="text"
-        placeholder="댓글을 입력하세요..."
-        className="flex-1 bg-[#2a2a2a] text-white rounded-full px-4 py-2 text-sm outline-none"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <button
-        onClick={handleSubmit}
-        className="text-sm text-pink-400 font-semibold hover:underline"
-      >
-        작성
-      </button>
-    </div>
-  );
-};
+import CommentInput from "./CommentInput";
+import { MoreVertical, Pencil } from "lucide-react";
+import CommentEditSection from "./CommentChange/CommentEditSection";
+import CommentDeleteButton from "./CommentChange/CommentDeleteButton";
 
 const CommentList = ({ lpId }: { lpId: number }) => {
   const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const { ref, inView } = useInView();
-  const [localComments, setLocalComments] = useState<any[]>([]);
-
-  const handleAddComment = (content: string) => {
-    const newComment = {
-      id: Date.now(),
-      content,
-      author: {
-        name: "곰구",
-        avatar: "/images/profile.png",
-      },
-    };
-    setLocalComments(prev => [newComment, ...prev]);
-  };
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const [editModeId, setEditModeId] = useState<number | null>(null);
 
   const {
     data,
@@ -60,17 +20,22 @@ const CommentList = ({ lpId }: { lpId: number }) => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-  } = useGetInfiniteLpComments(lpId, order);
+  } = useGetInfiniteLpComments(lpId, order, 10);
 
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage]);
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  const handleEditClick = (commentId: number) => {
+    setEditModeId(commentId);
+    setOpenMenuId(null); 
+  };
 
   return (
     <div className="bg-[#1e1e1e] p-4 rounded-lg max-h-[500px] overflow-y-auto flex flex-col justify-between no-scrollbar">
-      <CommentInput onSubmit={handleAddComment} />
+      <CommentInput lpId={lpId} />
       <div className="flex justify-end mb-2 mt-4">
         <select
           value={order}
@@ -85,36 +50,55 @@ const CommentList = ({ lpId }: { lpId: number }) => {
         {isLoading ? (
           <CommentSkeletonList count={10} />
         ) : (
-          <>
-            {localComments.map((comment) => (
-              <div key={comment.id} className="mb-4 border-b border-gray-700 pb-2">
+          data?.pages
+            .flatMap((page) => page.data.data)
+            .map((comment) => (
+              <div key={comment.id} className="mb-4 border-b border-gray-700 pb-2 relative">
                 <div className="flex items-center space-x-2 mb-1">
                   <img
-                    src={comment.author.avatar}
+                    src={comment.author.avatar || "/images/jokeBear.png"}
                     className="w-6 h-6 rounded-full"
                     alt="작성자"
                   />
                   <span className="text-sm font-bold">{comment.author.name}</span>
-                </div>
-                <p className="text-gray-300 text-sm">{comment.content}</p>
-              </div>
-            ))}
-            {data?.pages
-              .flatMap((page) => page.data.data)
-              .map((comment) => (
-                <div key={comment.id} className="mb-4 border-b border-gray-700 pb-2">
-                  <div className="flex items-center space-x-2 mb-1">
-                    <img
-                      src={comment.author.avatar || "/images/profile.png"}
-                      className="w-6 h-6 rounded-full"
-                      alt="작성자"
-                    />
-                    <span className="text-sm font-bold">{comment.author.name}</span>
+
+                  {/* 점 세 개 메뉴 */}
+                  <div className="ml-auto relative">
+                    <button onClick={() => setOpenMenuId(openMenuId === comment.id ? null : comment.id)}>
+                      <MoreVertical className="w-4 h-4 text-gray-400" />
+                    </button>
+                    {openMenuId === comment.id && (
+                      <div className="absolute right-0 mt-2 w-10 bg-gray-800 text-sm rounded shadow-lg z-10">
+                        <button
+                          className="w-full px-3 py-1 hover:bg-gray-700 text-center"
+                          onClick={() => handleEditClick(comment.id)}
+                        >
+                          <Pencil className="w-3 h-3" />
+                        </button>
+
+                        <CommentDeleteButton
+                          lpId={lpId}
+                          commentId={comment.id}
+                          order={order}
+                        />
+                      </div>
+                    )}
                   </div>
-                  <p className="text-gray-300 text-sm">{comment.content}</p>
                 </div>
-              ))}
-          </>
+
+                {editModeId === comment.id ? (
+                  <CommentEditSection
+                    lpId={lpId}
+                    commentId={comment.id}
+                    initialContent={comment.content}
+                    onCancel={() => setEditModeId(null)}
+                  />
+                ) : (
+                  <p className="text-gray-300 text-sm">{comment.content}</p>
+                )}
+
+              </div>
+            ))
         )}
         {isFetchingNextPage && (
           <p className="text-gray-500 text-center">로딩 중...</p>

@@ -1,12 +1,12 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { PAGINATION_ORDER } from "../../enums/common";
-import { getLpComments } from "../../apis/lp";
+import { getLpComments } from "../../apis/comment";
 import { QUERY_KEY } from "../../constants/key";
 
 function useGetInfiniteLpComments(
   lpId: number,
   order: PAGINATION_ORDER,
-  limit: number = 10
+  limit: number,
 ) {
   return useInfiniteQuery({
     queryKey: [QUERY_KEY.lpComments, lpId, order],

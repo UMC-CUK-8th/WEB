@@ -4,14 +4,15 @@ import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
 import { PAGINATION_ORDER } from "../enums/common";
 import LpCard from "../components/LpCard/LpCard";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
+import FloatingAddButton from "../components/Button/FloatingAddButton";
+import AddLpModal from "../components/Modal/AddLpModal";
 
 const HomePage = () => {
   const [search, setSearch ] = useState("");
   const [sortOrder, setSortOrder] = useState(PAGINATION_ORDER.desc);
-  // const { data } = useGetLpList({
-  //   search,
-  //   limit:50,
-  // });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
   
   const { 
     data:lps, 
@@ -78,6 +79,13 @@ const HomePage = () => {
           ))
         }
         {isFetching && <LpCardSkeletonList count={20} />}
+        
+        <FloatingAddButton onClick={handleOpenModal} />
+        {isModalOpen && (
+          <AddLpModal
+            onClose={handleCloseModal}
+          />
+        )}
       </div>
       <div ref={ref} className="h-2"></div>
     </div>
