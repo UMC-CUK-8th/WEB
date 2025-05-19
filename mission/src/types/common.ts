@@ -10,7 +10,7 @@ export type CommonResponse<T>={
 export type CursorBasedResponse<T>={
     status:boolean;
     statusCode:number;
-    messege:string;
+    message:string;
     data:T;
     nextCursor:number;
     hasNext:boolean;
