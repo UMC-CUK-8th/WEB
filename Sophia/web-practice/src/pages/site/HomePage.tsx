@@ -6,16 +6,19 @@ import Search from '../../assets/search.svg';
 import { useInView } from 'react-intersection-observer';
 import LpCard from '../../components/Site/LpCard';
 import LpCardSkeletonList from '../../components/Site/LpCardSkeletonList';
+import useDebounce from '../../hooks/useDeounce';
+import { SEARCH_DEBOUNCE_DELAY } from '../../constants/delay';
 
 export default function HomePage() {
   const [order, setorder] = useState(PAGINATION_ORDER.desc);
   const [search, setSearch] = useState('');
+  const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
 
   // const { data, isPending, isError } = useGetLpList({
   //   limit: 50,
   // });
 
-  const { data: lps, isFetching, hasNextPage, isPending, isError, fetchNextPage } = useGetInfiniteLpList(5, search, order);
+  const { data: lps, isFetching, hasNextPage, isPending, isError, fetchNextPage } = useGetInfiniteLpList(5, debouncedValue, order);
 
   // ref: 특정한 HTML 요소를 감시
   // inView: 그 요소가 화면에 보이면 true 아니면 false
@@ -39,7 +42,7 @@ export default function HomePage() {
       <div className='flex justify-between m-2'>
         <div className='flex items-center gap-2'>
           <img src={Search} alt='검색' className='w-6' />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} className='border-white border-2 rounded-md h-8 text-white' />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder='검색어를 입력해주세요' className='border-white border-2 rounded-md h-8 text-white w-[12rem] p-2' />
         </div>
         <div className='flex justify-end'>
           <div className='inline-flex border-2 rounded-md border-white'>
