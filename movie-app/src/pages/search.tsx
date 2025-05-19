@@ -6,6 +6,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import SkeletonCard from "../components/skeletonCard";
 import LPCard from "../components/lpCard";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { useThrottle } from "../hooks/useThrottle";
 
 interface LP {
     id: number;
@@ -119,6 +120,15 @@ const SearchPage = () => {
             return titleMatch || tagMatch;
         })
     );
+
+    const throttledScrollHandler = useThrottle(() => {
+        console.log("SearchPage 스크롤 이벤트 (1초에 1번) :", new Date().toLocaleTimeString());
+    }, 1000);
+
+    useEffect(() => {
+        window.addEventListener("scroll", throttledScrollHandler);
+        return () => window.removeEventListener("scroll", throttledScrollHandler);
+    }, [throttledScrollHandler]);
 
     return (
         <div className="bg-black pt-20 min-h-screen py-6 px-4">

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import LPCard from "../components/lpCard";
 import { useAuth } from "../context/authContext";
 import SkeletonCard from "../components/skeletonCard";
+import { useThrottle } from "../hooks/useThrottle";
 
 interface LP {
     id: number;
@@ -49,6 +50,15 @@ const HomePage = () => {
         initialPageParam: 0,
     });
 
+    const throttledScrollHandler = useThrottle(() => {
+        console.log("HomePage 스크롤 이벤트 (1초에 1번) :", new Date().toLocaleTimeString());
+    }, 1000);
+
+    useEffect(() => {
+        window.addEventListener("scroll", throttledScrollHandler);
+        return () => window.removeEventListener("scroll", throttledScrollHandler);
+    }, [throttledScrollHandler]);
+    
     const handleCardClick = (lpId: number) => {
         if (!isAuthenticated) {
           const confirmLogin = window.confirm("로그인이 필요한 기능입니다. 로그인하시겠습니까?");
