@@ -1,4 +1,4 @@
-import CommentCardSkeleton from "./commentCardSkeleton";
+import CommentCardSkeleton from "./CommentCardSkeleton";
 
 interface CommentCardSkeletonListProps{
     count:number;

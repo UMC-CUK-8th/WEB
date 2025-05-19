@@ -1,4 +1,4 @@
-import { CursorBasedResponse } from "./common";
+import { CommonResponse, CursorBasedResponse } from "./common";
 
 export type Tag={
     id:number;
@@ -27,12 +27,12 @@ export type ResponseLpListDto=CursorBasedResponse<Lp[]>;
 
 export type Comments={
     id: number;
-  content: string;
-  lpId: number;
-  authorId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: Author;
+    content: string;
+    lpId: number;
+    authorId: number;
+    createdAt: string;
+    updatedAt: string;
+    author: Author;
 }
 
 export type ResponseCommentsListDto=CursorBasedResponse<Comments[]>;
@@ -60,6 +60,32 @@ export type LpDetailItems={
     tags: Tag[];
     likes: Likes[];
 }
-export type ResponseLpDetailDto=CursorBasedResponse<{
-    data:LpDetailItems;
+export type ResponseLpDetailDto=CommonResponse<LpDetailItems>;
+
+export type ResponseLikeLpDto=CommonResponse<{
+    id:number;
+    userId:number;
+    lpId:number;
 }>;
+
+export type ResponseLpAddDto=CommonResponse<{
+    id:number;
+    title:string;
+    content:string;
+    thumbnail:string;
+    published:boolean;
+    authorId:number;
+    createdAt:Date;
+    updatedAt:Date;
+}>;
+
+export type AddLpDto={
+    title: string;
+    content: string;
+    thumbnail: string;
+    tags?: string[];
+    published: boolean;
+}
+
+export type ResponseUproadsImageDto=CommonResponse<{imageUrl:string;}>;
+export type ResponseCommentsDto=CommonResponse<Comments>;
