@@ -1,12 +1,12 @@
 import { FcGoogle } from "react-icons/fc";
 import { IoChevronBack } from "react-icons/io5";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/formInput";
 import { useForm } from "../hooks/useForm";
 import { login as loginAPI } from "../api/auth";
 import LoadingSpinner from "../components/loading";
 import { useAuth } from "../context/authContext";
+import { useMutation } from "@tanstack/react-query";
 
 const LoginPage = () => {
     const {
@@ -20,35 +20,32 @@ const LoginPage = () => {
         setTouched,
     } = useForm();
 
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { login: authLogin } = useAuth();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!validate()) return;
-        
-        setLoading(true);
-        try {
-            const data = await loginAPI(email, password);
-            console.log("로그인 응답 data:", data);
-            const accessToken = data.data.accessToken;
-            const refreshToken = data.data.refreshToken;
+    const loginMutation = useMutation({
+        mutationFn: () => loginAPI(email, password),
+        onSuccess: async (data) => {
+            const { accessToken, refreshToken, id } = data.data;
             if (!accessToken || !refreshToken) {
                 alert("서버에서 토큰을 반환하지 않았습니다.");
                 return;
             }
-            await authLogin(accessToken);
+            localStorage.setItem("userId", String(id));
             localStorage.setItem("refreshToken", refreshToken);
+            await authLogin(accessToken);
             alert("로그인에 성공했습니다!");
             navigate("/");
-        } catch (err) {
-            alert(
-                (err as any)?.response?.data?.message || "로그인에 실패했습니다"
-            );
-        } finally {
-            setLoading(false);
-        }
+        },
+        onError: (err: any) => {
+            alert(err?.response?.data?.message || "로그인에 실패했습니다");
+        },
+    });
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!validate()) return;
+        loginMutation.mutate();
     };
 
     const handleGoogleLogin = () => {
@@ -101,7 +98,7 @@ const LoginPage = () => {
                     error={touched.password ? errors.password : undefined}
                 />
 
-                {loading ? (
+                {loginMutation.isPending ? (
                     <div className="w-full flex justify-center py-4">
                         <LoadingSpinner size="sm" />
                     </div>
