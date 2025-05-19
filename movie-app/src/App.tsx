@@ -17,6 +17,7 @@ import OauthCallbackPage from './pages/oauthCallback';
 import MyPage from './pages/my';
 import ProtectedRoute from './components/protectedRoute';
 import LPDetail from './pages/lpDetail';
+import SearchPage from './pages/search';
 
 const router = createBrowserRouter([
   {
@@ -67,7 +68,11 @@ const router = createBrowserRouter([
       {
         path: 'lp/:lpId',
         element: <ProtectedRoute><LPDetail /></ProtectedRoute>
-      },      
+      },  
+      {
+        path: 'search',
+        element: <SearchPage/>
+      }    
     ]
   },
 ])
