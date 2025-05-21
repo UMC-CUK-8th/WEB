@@ -12,6 +12,7 @@ import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import LpPage from './pages/LpPage';
+import SearchPage from './pages/SearchPage';
 
 //publicRoutes : 인증 없이 접근 가능 라우트
 const publicRoutes:RouteObject[]=[
@@ -41,6 +42,10 @@ const protectedRoutes:RouteObject[]=[
     {
       path:'lp/:lpId',
       element:<LpPage/>
+    },
+    {
+      path:'search',
+      element:<SearchPage/>
     }
   ]
   }
