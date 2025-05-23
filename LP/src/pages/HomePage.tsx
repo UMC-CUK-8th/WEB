@@ -4,8 +4,11 @@ import { PAGINATION_ORDER } from "../enums/common";
 import useGetInfiniteLpList from "../hooks/queries/useGetInfiniteLpList";
 import {useInView} from "react-intersection-observer";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
+import useThrottle from "../hooks/useThrottle";
 
 const HomePage=()=>{
+
+    
     const [search,setSearch]=useState("");
     const [oldnew,setOldnew]=useState(PAGINATION_ORDER.asc);
     //const {data,isPending,isError}=useGetLpList({order:oldnew, limit:32});
@@ -16,16 +19,27 @@ const HomePage=()=>{
     //inView->그 요소가 화면에 보이면 true
     const {ref,inView}=useInView({threshold:0,})
 
-    useEffect(()=>{
+    
+    
+    const handleScroll=useThrottle(()=>{
+        useEffect(()=>{
         if (inView&&!isFetching && hasNextPage){fetchNextPage()
         }
-    },[inView,isFetching,fetchNextPage]);
+        },[inView,isFetching,fetchNextPage]);
+    },2000);
+        
+    
+    useEffect(()=>{
+        window.addEventListener("scroll",handleScroll);
 
+        return ()=>window.removeEventListener("scroll",handleScroll);
+    },[handleScroll]);
 
 
     if (isError){
         return <div>Error.</div>;
     }
+
     return (
         <div className="flex flex-col items-center justify-center bg-black min-h-screen">
         <div className="flex w-full pt-8 pr-10 justify-end">

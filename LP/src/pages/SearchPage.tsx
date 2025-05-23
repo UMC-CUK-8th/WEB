@@ -32,12 +32,16 @@ const SearchPage=()=>{
     }
     return (
         <div className="flex flex-col items-center bg-black min-h-screen">
-
-        <div className="flex justify-center items-center border-b border-white text-white text-3xl flex mt-10 h-10 w-150 ">
+        <div className="flex justify-center items-center h-20">
+        <div className="border-b border-white text-white text-3xl flex h-10 w-150">
             <FaSearch/>
         <input value={search} onChange={(e)=>setSearch(e.target.value)}
         className="ml-2 w-full outline-none text-2xl"/>
-
+        </div>
+        <select className="text-white bg-black w-23 p-2 border-2 border-white cursor-pointer rounded-lg">
+            <option value="1" selected > 제목</option>
+            <option value="2">태그</option>
+        </select>
         </div>
         <div className="flex w-full pt-8 pr-10 justify-end">
             
