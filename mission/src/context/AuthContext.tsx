@@ -7,6 +7,7 @@ import { postLogout, postSignin } from '../apis/auth';
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
+  
   login: (signinData: RequestSigninDto) => Promise<void>;
   logout: () => Promise<void>;
 }

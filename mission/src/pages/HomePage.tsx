@@ -5,6 +5,7 @@ import {useInView} from "react-intersection-observer";
 import LpCard from "../components/LpCard";
 import LpCardSkeletonList from "../components/LpCardSkeletonList";
 import {FaSearch} from "react-icons/fa";
+
 export default function HomePage() {
   const [order, setorder] = useState(PAGINATION_ORDER.desc);
   const [search, setSearch] = useState('');
@@ -54,7 +55,6 @@ export default function HomePage() {
       <div className='grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 justify-items-center'>
         {isPending && <LpCardSkeletonList count={20} />}
 
-        {/* flat: [[1,2],[3,4]] -> [1,2,3,4] */}
         {lps?.pages
           .map((page) => page.data.data)
           ?.flat()
