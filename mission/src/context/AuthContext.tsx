@@ -7,9 +7,10 @@ import { postLogout, postSignin } from '../apis/auth';
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
-  
   login: (signinData: RequestSigninDto) => Promise<void>;
   logout: () => Promise<void>;
+  userName: string | null;
+  setUserName: (name: string | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -17,6 +18,8 @@ export const AuthContext = createContext<AuthContextType>({
   refreshToken: null,
   login: async () => {},
   logout: async () => {},
+  userName: null,
+  setUserName: () => {},
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -24,8 +27,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   
   const { getItem: getRefreshTokenFromStorage, setItem: setRefreshTokenInStorage, removeItem: removeRefreshTokenFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.refreshToken);
 
+  const { setItem: setUserNameInStorage, getItem: getUserNameFromStorage, removeItem: removeUserNameFromStorage } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
+
   const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromStorage());
   const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromStorage());
+  const [userName, setUserName] = useState<string | null>(getUserNameFromStorage());
 
   const login = async (signinData: RequestSigninDto) => {
     try {
@@ -40,6 +46,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
         setAccessToken(newAccessToken);
         setRefreshToken(newRefreshToken);
+        setUserName(userName);
 
         alert('로그인 성공');
         window.location.href = '/';
@@ -66,7 +73,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  return <AuthContext.Provider value={{ accessToken, refreshToken, login, logout }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ accessToken, refreshToken, login, logout, userName, setUserName }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
