@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import { closeModal } from "../features/modal/modalSlice";
-import { clearCart } from "../features/cart/cartSlice";
+import { useCartStore } from "../zustand/cartStore";
+import { useModalStore } from "../zustand/modalStroe";
 
 const CartModal = () => {
-    const dispatch = useDispatch();
-    const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+    const isOpen = useModalStore((state) => state.isOpen);
+    const closeModal = useModalStore((state) => state.closeModal);
+    const clearCart = useCartStore((state) => state.clearCart);
 
     if (!isOpen) return null;
 
@@ -16,15 +15,15 @@ const CartModal = () => {
                 <div className="flex justify-around">
                     <button
                         className="px-4 py-1 bg-gray-200 text-sm rounded"
-                        onClick={() => dispatch(closeModal())}
+                        onClick={closeModal}
                     >
                         아니요
                     </button>
                     <button
                         className="px-4 py-1 bg-red-500 text-white text-sm rounded"
                         onClick={() => {
-                        dispatch(clearCart());
-                        dispatch(closeModal());
+                            clearCart();
+                            closeModal();
                         }}
                     >
                         네
