@@ -2,6 +2,8 @@ import './App.css';
 
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import { AuthProvider } from './context/authContext';
+import { Provider } from 'react-redux';
+import store from './app/store';
 
 import HomePage from './pages/home';
 import SignUpPage from './pages/signup';
@@ -18,6 +20,7 @@ import MyPage from './pages/my';
 import ProtectedRoute from './components/protectedRoute';
 import LPDetail from './pages/lpDetail';
 import SearchPage from './pages/search';
+import CartPage from './pages/cart';
 
 const router = createBrowserRouter([
   {
@@ -72,16 +75,22 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage/>
-      }    
+      },
+      {
+        path: 'store',
+        element: <CartPage/>
+      }
     ]
   },
 ])
 
 function App() {
   return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <Provider store={store}> 
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </Provider>
   );
 }
 
