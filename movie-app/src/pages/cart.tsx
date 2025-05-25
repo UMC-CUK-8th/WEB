@@ -6,6 +6,7 @@ import {
 } from "../features/cart/cartSlice";
 import CartItem from "../components/cartItem";
 import CartFooter from "../components/cartFooter";
+import CartModal from "../components/cartModal";
 
 const CartPage = () => {
     const { cartItems } = useSelector((state: RootState) => state.cart);
@@ -23,6 +24,7 @@ const CartPage = () => {
                 ))}
             </div>
             <CartFooter />
+            <CartModal/>
         </div>
     );
 };

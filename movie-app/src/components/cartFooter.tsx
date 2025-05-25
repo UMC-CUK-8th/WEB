@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../app/store";
-import { clearCart } from "../features/cart/cartSlice";
+import { openModal } from "../features/modal/modalSlice";
 
 const CartFooter = () => {
     const { totalAmount, totalPrice } = useSelector((state: RootState) => state.cart);
@@ -14,7 +14,7 @@ const CartFooter = () => {
         </div>
         <button
             className="bg-red-500 text-white px-4 py-2 rounded"
-            onClick={() => dispatch(clearCart())}
+            onClick={() => dispatch(openModal())}
         >
             전체 삭제
         </button>
