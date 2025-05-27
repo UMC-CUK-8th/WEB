@@ -45,7 +45,8 @@ export default function HomeLayout() {
 
   return (
     // 전체 화면 높이 설정, main 컨텐츠 높이 설정
-    <div className='h-dvh flex flex-col bg-black'>
+    // h-dvh
+    <div className='flex flex-col bg-black'>
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <main className={`flex justify-center relative overflow-y-auto h-full ${isMenuOpen ? 'lg:ml-72' : ''}`}>
         {isMenuOpen && (

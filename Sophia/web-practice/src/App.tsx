@@ -13,6 +13,7 @@ import GoogleLoginRedirectPage from './pages/site/GoogleLoginRedirectPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import LpDetail from './pages/site/LpDetail';
+import ThrottlePage from './pages/site/ThrottlePage';
 
 // import NotFountPage from './pages/MoviePage/NotFountPage';
 // import MovieDetail from './pages/MoviePage/MovieDetail';
@@ -44,6 +45,10 @@ const publicRoutes: RouteObject[] = [
       {
         path: ':lpId',
         element: <LpDetail />,
+      },
+      {
+        path: 'throttle',
+        element: <ThrottlePage />,
       },
     ],
   },
