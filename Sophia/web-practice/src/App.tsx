@@ -1,5 +1,14 @@
 import './App.css';
 import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Provider } from 'react-redux';
+
+import Navbar from './components/PlayList/Navbar';
+import CartList from './components/PlayList/CartList';
+
+import ThrottlePage from './pages/site/ThrottlePage';
 
 import NotFoundPage from './pages/site/NotFoundPage';
 import LoginPage from './pages/site/LoginPage';
@@ -7,13 +16,11 @@ import HomePage from './pages/site/HomePage';
 import HomeLayout from './layouts/HomeLayout';
 import SignupPage from './pages/site/SignupPage';
 import MyPage from './pages/site/MyPage';
-import { AuthProvider } from './context/AuthContext';
 import ProtectedLayout from './layouts/ProtectedLayout';
 import GoogleLoginRedirectPage from './pages/site/GoogleLoginRedirectPage';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import LpDetail from './pages/site/LpDetail';
-import ThrottlePage from './pages/site/ThrottlePage';
+import store from './store/store';
+import PriceBox from './components/PlayList/PriceBox';
 
 // import NotFountPage from './pages/MoviePage/NotFountPage';
 // import MovieDetail from './pages/MoviePage/MovieDetail';
@@ -92,12 +99,20 @@ export const queryClient = new QueryClient();
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
-      {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-    </QueryClientProvider>
+    // Site
+    // <QueryClientProvider client={queryClient}>
+    //   <AuthProvider>
+    //     <RouterProvider router={router} />
+    //   </AuthProvider>
+    //   {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+    // </QueryClientProvider>
+
+    // PlayList
+    <Provider store={store}>
+      <Navbar />
+      <CartList />
+      <PriceBox />
+    </Provider>
   );
 }
 
