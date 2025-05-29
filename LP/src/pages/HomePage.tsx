@@ -19,22 +19,15 @@ const HomePage=()=>{
     //inView->그 요소가 화면에 보이면 true
     const {ref,inView}=useInView({threshold:0,})
 
-    
-    
-    const handleScroll=useThrottle(()=>{
-        useEffect(()=>{
-        if (inView&&!isFetching && hasNextPage){fetchNextPage()
-        }
-        },[inView,isFetching,fetchNextPage]);
-    },2000);
-        
+    const throttle=useThrottle(fetchNextPage,3000);
     
     useEffect(()=>{
-        window.addEventListener("scroll",handleScroll);
-
-        return ()=>window.removeEventListener("scroll",handleScroll);
-    },[handleScroll]);
-
+    if (inView&&!isFetching && hasNextPage){
+        throttle;
+        }
+    },[inView,isFetching,fetchNextPage,throttle]);
+    
+        
 
     if (isError){
         return <div>Error.</div>;
@@ -48,7 +41,7 @@ const HomePage=()=>{
             <button className={`w-23 p-2 border-2 border-white cursor-pointer rounded-r-lg ${oldnew !== "asc" ? "bg-white text-black" : "bg-black text-white"}`}
                 onClick={()=>setOldnew(PAGINATION_ORDER.desc)}>최신순</button>
         </div>
-      <div className="grid p-3 gird-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <div className="grid p-3 grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {isPending&&
             <LpCardSkeletonList count={20}/>}
         {lps?.pages?.map((page)=>page.data.data)?.flat()?.map((lp)=><LpCard key={lp.id} lp={lp}/>  
