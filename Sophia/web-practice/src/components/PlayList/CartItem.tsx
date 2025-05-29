@@ -1,5 +1,6 @@
-import { useDispatch } from '../../hooks/useCustomRedux';
-import { decrement, increment, removeItem } from '../../slices/cartSlice';
+import { useCartActions } from '../../hooks/useCartStore';
+// import { useDispatch } from '../../hooks/useCustomRedux';
+// import { decrement, increment, removeItem } from '../../slices/cartSlice';
 import { LP } from '../../types/cart';
 
 interface CartItemProps {
@@ -7,18 +8,22 @@ interface CartItemProps {
 }
 
 export default function CartItem({ lp }: CartItemProps) {
-  const dispatch = useDispatch();
+  const { increment, decrement, removeItem } = useCartActions();
+  // const dispatch = useDispatch();
 
   const handleIncreaseCount = () => {
-    dispatch(increment({ id: lp.id }));
+    increment(lp.id);
+    // dispatch(increment({ id: lp.id }));
   };
 
   const handleDecreaseCount = () => {
     if (lp.amount === 1) {
-      dispatch(removeItem({ id: lp.id }));
+      removeItem(lp.id);
+      // dispatch(removeItem({ id: lp.id }));
     }
 
-    dispatch(decrement({ id: lp.id }));
+    decrement(lp.id);
+    // dispatch(decrement({ id: lp.id }));
   };
 
   return (

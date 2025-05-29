@@ -1,8 +1,10 @@
+import { useCartActions } from '../../hooks/useCartStore';
 import { useDispatch } from '../../hooks/useCustomRedux';
-import { clearCart } from '../../slices/cartSlice';
+// import { clearCart } from '../../slices/cartSlice';
 import { closeModal } from '../../slices/modalSlice';
 
 export default function Modal() {
+  const { clearCart } = useCartActions();
   const dispatch = useDispatch();
 
   const handleNoButton = () => {
@@ -10,7 +12,8 @@ export default function Modal() {
   };
 
   const handleYesButton = () => {
-    dispatch(clearCart());
+    clearCart();
+    // dispatch(clearCart());
     dispatch(closeModal());
   };
 

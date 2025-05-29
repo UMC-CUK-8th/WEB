@@ -2,9 +2,12 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from '../../hooks/useCustomRedux';
 import { closeModal, openModal } from '../../slices/modalSlice';
 import Modal from './Modal';
+import { useCartInfo } from '../../hooks/useCartStore';
 
 export default function PriceBox() {
-  const { total } = useSelector((state) => state.cart);
+  const { total } = useCartInfo();
+  // const { total } = useSelector((state) => state.cart);
+
   const { isOpen } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
   const modalBg = useRef<HTMLDivElement | null>(null);
