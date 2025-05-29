@@ -1,17 +1,19 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "../hooks/useCustomRedux";
 import { closeModal } from "../slices/modalSlice";
-import { clearCart } from "../slices/cartSlice";
+import { useCartActions } from "../hooks/useCartStore";
 
 const Modal=()=>{
     const {isOpen}=useSelector((state)=>state.modal);
     const dispatch=useDispatch();
 
+    const {clearCart}=useCartActions();
+
     const handleCloseModal=()=>{
         dispatch(closeModal());
     }
     const handleClickYes=()=>{
-        dispatch(clearCart());
+        clearCart();
         dispatch(closeModal());
     }
 

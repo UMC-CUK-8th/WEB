@@ -1,21 +1,21 @@
 import { useEffect } from "react";
-import { useSelector } from "../hooks/useCustomRedux";
 import { useDispatch } from "react-redux";
-import { calculateTotals, clearCart } from "../slices/cartSlice";
 import { openModal } from "../slices/modalSlice";
+import { useCartActions, useCartInfo } from "../hooks/useCartStore";
 
 const PriceBox=()=>{
-    const {total,cartItems}=useSelector((state)=>state.cart);
     const dispatch=useDispatch();
+    const {calculateTotals}=useCartActions();
+    const {total,cartItems}=useCartInfo();
 
-    const handleInitializeCount=()=>{
-        dispatch(clearCart());
-    }
+    // const handleInitializeCount=()=>{
+    //     dispatch(clearCart());
+    // }
     const handleOpenModal=()=>{
         dispatch(openModal());
     }
     useEffect(()=>{
-        dispatch(calculateTotals());
+        calculateTotals();
     },[dispatch,cartItems]);
 
     return (
