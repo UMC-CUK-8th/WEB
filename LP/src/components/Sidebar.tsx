@@ -27,7 +27,8 @@ const Sidebar = () => {
                 
                 <div className="flex items-center gap-3 cursor-pointer  text-left w-20">
                 <FaSearch/>
-                <button className="cursor-pointer">
+                <button className="cursor-pointer"
+                            onClick={()=>navigate("/search")}>
                     찾기
                 </button>
                 </div>
