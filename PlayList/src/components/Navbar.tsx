@@ -1,16 +1,25 @@
 import { FaShoppingCart } from "react-icons/fa"
-import { useSelector } from "../hooks/useCustomRedux"
+// import { useSelector } from "../hooks/useCustomRedux"
 import { useEffect } from "react"
-import { calculateTotals } from "../slices/cartSlice"
-import { useDispatch } from "../hooks/useCustomRedux"
+// import { calculateTotals } from "../slices/cartSlice"
+// import { useDispatch } from "../hooks/useCustomRedux"
+import { useCartActions, useCartInfo } from "../hooks/useCartStore"
 
 const NavBar = () => {
-  const { amount, cartItems } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+  const { amount, cartItems } = useCartInfo();
+  const { calculateTotals } = useCartActions();
 
   useEffect(() => {
-    dispatch(calculateTotals());
-  }, [dispatch, cartItems]);
+    calculateTotals();
+  }, [cartItems, calculateTotals]);
+ 
+  // redux-toolkit 사용 시
+  // const { amount, cartItems } = useSelector((state) => state.cart);
+  // const dispatch = useDispatch();
+  //
+  // useEffect(() => {
+  //   dispatch(calculateTotals());
+  // }, [dispatch, cartItems]);
 
   return (
     <div className="flex justify-between items-center p-4 bg-gray-800 text-white">
