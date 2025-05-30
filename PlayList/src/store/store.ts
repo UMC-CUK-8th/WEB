@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "../slices/cartSlice";
+import modalReducer from "../slices/modalSlice";
 
 // 1. 저장소 생성
 function createStore() {
@@ -7,6 +8,7 @@ function createStore() {
         // 2. 리듀서 설정 - cartSlice에서 name을 cart로 맞춰졌으므로 cart를 할당.
         reducer: {
             cart: cartReducer,
+            modal: modalReducer,
         },
     });
 

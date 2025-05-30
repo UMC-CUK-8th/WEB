@@ -1,11 +1,13 @@
 import CartItem from "./CartItem";
 // import { useDispatch, useSelector } from "../hooks/useCustomRedux";
 // import { clearCart } from "../slices/cartSlice";
-import { useCartActions, useCartInfo } from "../hooks/useCartStore";
+import { useCartInfo } from "../hooks/useCartStore";
+import ClearCartButton from "./ClearCartButton";
+import Modal from "./Modal";
 
 const CartList = () => {
   const { cartItems } = useCartInfo();
-  const { clearCart } = useCartActions();
+  // const { clearCart } = useCartActions();
 
   // 이 방식 비추천.
   // state.cartList가 안받아와짐.
@@ -24,9 +26,10 @@ const CartList = () => {
   //   dispatch(clearCart());
   // };
 
-  const handleAllClearButton = () => {
-    clearCart();
-  };
+  // 화면에서 직접 전체 삭제하는 것을 모달에서 처리하도록 변경.
+  // const handleAllClearButton = () => {
+  //   clearCart();
+  // };
 
   return (
     <div className='flex flex-col items-center justify-center'>
@@ -42,12 +45,8 @@ const CartList = () => {
               <CartItem key={index} lp={item} />
           ))}
       </ul>
-      <button
-        onClick={handleAllClearButton}
-        className="p-4 border rounded-md my-10"
-      >
-        전체 삭제
-      </button>
+      <ClearCartButton />
+      <Modal />
     </div>
   )
 }
