@@ -24,7 +24,7 @@ export default function HomeLayout() {
   }, []);
 
   return (
-    <div className='h-dvh flex flex-col bg-black'>
+    <div className='flex flex-col bg-black'>
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <main className={`relative overflow-y-auto h-full ${isMenuOpen ? 'lg:ml-72' : ''}`}>
         {isMenuOpen && (
