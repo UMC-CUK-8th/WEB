@@ -6,9 +6,12 @@ import LpCard from "../components/LpCard/LpCard";
 import LpCardSkeletonList from "../components/LpCard/LpCardSkeletonList";
 import FloatingAddButton from "../components/Button/FloatingAddButton";
 import AddLpModal from "../components/Modal/AddLpModal";
+import useDebounce from "../hooks/useDebounce";
+import { SEARCH_DEBOUNCE_DELAY } from "../constants/delay";
 
 const HomePage = () => {
   const [search, setSearch ] = useState("");
+  const debouncedValue = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
   const [sortOrder, setSortOrder] = useState(PAGINATION_ORDER.desc);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => setIsModalOpen(true);
@@ -21,7 +24,7 @@ const HomePage = () => {
     isPending, 
     fetchNextPage, 
     isError 
-  } = useGetInfiniteLpList(1, search, sortOrder);
+  } = useGetInfiniteLpList(1, debouncedValue, sortOrder); // 기존 search를 debouncedValue로 갈아낀다. 
 
   // ref, inView
   // ref -> 특정한 HTML 요소를 감시할 수 있다.
