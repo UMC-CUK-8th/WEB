@@ -1,12 +1,19 @@
-import { useDispatch, useSelector } from "../hooks/useCustomRedux";
-import { clearCart } from "../slices/cartSlice";
+import { useCartActions, useCartInfo } from "../hooks/useCartStore";
+// import { useDispatch, useSelector } from "../hooks/useCustomRedux";
+// import { clearCart } from "../slices/cartSlice";
 
 const PriceBox = () => {
-  const { total } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
+  const { total } = useCartInfo();
+  const { clearCart } = useCartActions();
+  // const { total } = useSelector((state) => state.cart);
+  // const dispatch = useDispatch();
+
+  // const handleInitializeCart = () => {
+  //   dispatch(clearCart());
+  // };
 
   const handleInitializeCart = () => {
-    dispatch(clearCart());
+    clearCart();
   };
 
   return (
