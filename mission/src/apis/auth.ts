@@ -30,3 +30,8 @@ export const postLogout = async() => {
     return data;
   }
   
+export const deleteAccount = async() => {
+    const { data } = await axiosInstance.delete("/v1/users");
+
+    return data;
+  }

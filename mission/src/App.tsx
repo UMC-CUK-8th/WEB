@@ -13,6 +13,7 @@ import { AuthProvider } from './context/AuthContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import LpDetail from './pages/LpDetail';
+import ThrottlePage from './pages/ThrottlePage';
 
 const publicRoutes: RouteObject[] = [
   {
@@ -53,6 +54,10 @@ const protectedRoutes: RouteObject[] = [
       {
         path: ':lpId',
         element: <LpDetail />,
+      },
+      {
+        path:'throttle',
+        element: <ThrottlePage/>
       },
     ],
   },

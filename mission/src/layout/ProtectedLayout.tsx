@@ -33,7 +33,7 @@ export default function ProtectedLayout() {
 
   return (
     // 전체 화면 높이 설정, main 컨텐츠 높이 설정
-    <div className='h-dvh flex flex-col bg-black'>
+    <div className=' flex flex-col bg-black'>
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <main className={`flex flex-row relative overflow-y-auto h-full justify-center ${isMenuOpen ? 'lg:ml-72' : ''}`}>
         {isMenuOpen && (

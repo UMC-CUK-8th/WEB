@@ -1,9 +1,20 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { FaSearch, FaUser } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import DeleteAccountModal from '../components/DeleteAccountModal';
 
 export default function Sidebar() {
   const { accessToken } = useAuth();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleDeleteAccount = () => {
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDeleteModal(false);
+  };
 
   return (
     <div>
@@ -20,10 +31,11 @@ export default function Sidebar() {
         </div>
         <div className="p-6 text-sm">
           {accessToken && (
-           <button className="items-flex-end mt-2 block cursor-pointer hover:text-red-600">탈퇴하기</button>
+           <button className="items-flex-end mt-2 block cursor-pointer hover:text-red-600" onClick={handleDeleteAccount}>탈퇴하기</button>
           )}
         </div>
       </aside>
+       {showDeleteModal && <DeleteAccountModal onClose={handleCloseModal} />}
     </div>
   );
 }

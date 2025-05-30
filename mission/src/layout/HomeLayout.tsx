@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import FloatingButton from '../components/FloatingButton';
 
 export default function HomeLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(() => window.innerWidth >= 1024);
@@ -23,8 +24,7 @@ export default function HomeLayout() {
   }, []);
 
   return (
-    // 전체 화면 높이 설정, main 컨텐츠 높이 설정
-    <div className='h-dvh flex flex-col bg-black'>
+    <div className='flex flex-col bg-black'>
       <Navbar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <main className={`relative overflow-y-auto h-full ${isMenuOpen ? 'lg:ml-72' : ''}`}>
         {isMenuOpen && (
@@ -33,6 +33,7 @@ export default function HomeLayout() {
           </div>
         )}
         <Outlet />
+        <FloatingButton/>
       </main>
       <Footer />
     </div>

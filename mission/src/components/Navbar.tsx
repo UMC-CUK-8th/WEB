@@ -10,10 +10,10 @@ interface NavbarProps {
 }
 
 function Navbar({ isMenuOpen, setIsMenuOpen }: NavbarProps) {
-  const { logout, accessToken } = useAuth();
+  const { logout, accessToken, userName } = useAuth();
   const navigate = useNavigate();
-  const { getItem } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
-  const userName = getItem();
+  // const { getItem } = useLocalStorage(LOCAL_STORAGE_KEY.userName);
+  // const userName = getItem();
 
   const handleLogout = async () => {
     await logout();
