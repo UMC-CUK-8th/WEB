@@ -1,31 +1,35 @@
-import { useDispatch, useSelector } from "react-redux";
-import { clearCart } from "../slices/cartSlice";
-import { closeModal } from "../slices/modalSlice";
+import { useCartInfo, useCartActions } from "../hooks/useCartStore";
 
 const Modal = () => {
-  const dispatch = useDispatch();
-  const isOpen = useSelector((state: any) => state.modal.isOpen);
+  const { isModalOpen } = useCartInfo();
+  const { clearCart, closeModal } = useCartActions();
 
-  if (!isOpen) return null;
+  if (!isModalOpen) return null;
 
   const handleYes = () => {
-    dispatch(clearCart());   
-    dispatch(closeModal());  
+    clearCart();
+    closeModal();
   };
 
   const handleNo = () => {
-    dispatch(closeModal());  
+    closeModal();
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-md">
-        <p className="mb-4">정말 전체 삭제하시겠습니까?</p>
-        <div className="flex justify-between">
-          <button onClick={handleYes} className="bg-red-500 text-white px-4 py-2 rounded">
+    <div className="fixed top-0 left-0 w-full h-full backdrop-blur-sm flex justify-center items-center z-50">
+      <div className="bg-white p-10 rounded-2xl shadow-2xl border-[1px] border-gray-200">
+        <p className="mb-4">전체 삭제하시겠습니까?</p>
+        <div className="flex w-full justify-between gap-3">
+          <button
+            onClick={handleYes}
+            className="flex-1 bg-red-500 text-white px-4 py-2 rounded shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1"
+          >
             네
           </button>
-          <button onClick={handleNo} className="bg-gray-300 text-black px-4 py-2 rounded">
+          <button
+            onClick={handleNo}
+            className="flex-1 bg-gray-300 text-black px-4 py-2 rounded shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1"
+          >
             아니요
           </button>
         </div>

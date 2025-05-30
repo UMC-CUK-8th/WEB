@@ -45,8 +45,10 @@ const CartList = () => {
               <CartItem key={index} lp={item} />
           ))}
       </ul>
+
       <ClearCartButton />
       <Modal />
+      
     </div>
   )
 }

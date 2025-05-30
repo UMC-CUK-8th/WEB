@@ -10,13 +10,15 @@ interface CartActions {
     removeItem: (id: string) => void;
     clearCart: () => void;
     calculateTotals: () => void;
+    openModal: () => void;
+    closeModal: () => void;
 };
 
 interface CartState {
     cartItems: CartItems;
     amount: number;
     total: number;
-
+    isModalOpen: boolean;
     actions: CartActions;
 };
 
@@ -26,6 +28,7 @@ export const useCartStore = create<CartState>()(
         cartItems: cartItems,
         amount: 0,
         total: 0,
+        isModalOpen: false,
         actions: {
             increase: (id: string) => {
                 // set((state) => ({
@@ -79,6 +82,16 @@ export const useCartStore = create<CartState>()(
                     state.total = total;
                 })
             },
+            openModal: () => {
+                set((state) => {
+                state.isModalOpen = true;
+                });
+            },
+            closeModal: () => {
+                set((state) => {
+                state.isModalOpen = false;
+                });
+            },
         },
     }))
 );
@@ -89,6 +102,7 @@ export const useCartInfo = () =>
             cartItems: state.cartItems,
             amount: state.amount,
             total: state.total,
+            isModalOpen: state.isModalOpen,
         }))
     );
 

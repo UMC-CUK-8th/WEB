@@ -1,16 +1,11 @@
-import { useDispatch } from "react-redux";
-import { openModal } from "../slices/modalSlice";
+import { useCartActions } from "../hooks/useCartStore";
 
 const ClearCartButton = () => {
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch(openModal());
-  };
+  const { openModal } = useCartActions();
 
   return (
     <button
-      onClick={handleClick}
+      onClick={openModal}
       className="p-4 border rounded-md my-10"
     >
       전체 삭제
