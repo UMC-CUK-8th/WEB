@@ -1,24 +1,26 @@
 import { Lp } from "../types/cart";
 import { useDispatch } from '../hooks/useCustomRedux';
 import { decrement, increment, removeItem } from '../slices/cartSlice';
+import { useCartActions } from "../hooks/useCartStore";
 
 interface CartItemProps{
     lp:Lp;
 }
 
 const CartItem = ({lp}:CartItemProps) => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    const {increase, decrease, removeItem } = useCartActions();
 
     const handleIncreaseCount = () => {
-    dispatch(increment({ id: lp.id }));
+    increase( lp.id );
   };
 
   const handleDecreaseCount = () => {
     if (lp.amount === 1) {
-      dispatch(removeItem({ id: lp.id }));
+      removeItem( lp.id );
     }
 
-    dispatch(decrement({ id: lp.id }));
+    decrease( lp.id );
   };
   return (
     <div className='flex items-center p-4 bordr-b border-gray-200'>
