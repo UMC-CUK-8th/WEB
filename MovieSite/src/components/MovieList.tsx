@@ -3,9 +3,10 @@ import MovieCard from "./MovieCard";
 
 interface MovieListProps {
     movies: Movie[];
+    onMovieClick: (movie: Movie) => void;
 }
 
-const MovieList = ({ movies}: MovieListProps) => {
+const MovieList = ({ movies, onMovieClick }: MovieListProps) => {
   if (movies.length === 0) {
     return (
       <div className="flex h-60 items-center justify-center">
@@ -17,10 +18,12 @@ const MovieList = ({ movies}: MovieListProps) => {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
       {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+        <div key={movie.id} onClick={() => onMovieClick(movie)} className="cursor-pointer">
+          <MovieCard movie={movie} />
+        </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default MovieList
+export default MovieList;
