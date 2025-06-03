@@ -77,12 +77,12 @@ const HomeLayout=()=>{
     }
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col">
             <Navbar clickSidebar={clickSidebar}/>
             
-            <main className="flex flex-1 overflow-hidden">
+            <main className="flex flex-1">
                 {sidebarClick&&<Sidebar/>}
-                <div className="flex-1 overflow-auto">
+                <div className="flex-1">
                 <Outlet />
 
                 <button className="fixed bottom-7 right-10 bg-pink-500 rounded-full w-16 h-16 text-xl font-bold text-white flex items-center justify-center cursor-pointer"

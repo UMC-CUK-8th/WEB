@@ -12,6 +12,8 @@ import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import LpPage from './pages/LpPage';
+import SearchPage from './pages/SearchPage';
+import ThrottlePage from './pages/ThrottlePage';
 
 //publicRoutes : 인증 없이 접근 가능 라우트
 const publicRoutes:RouteObject[]=[
@@ -23,7 +25,8 @@ const publicRoutes:RouteObject[]=[
       {index:true, element: <HomePage/ >},
       {path:'login', element: <LoginPage/ >},
       {path:'signup', element: <SignupPage/ >},
-      {path:'v1/auth/google/callback', element:<GoogleLoginRedirectPage/>}
+      {path:'v1/auth/google/callback', element:<GoogleLoginRedirectPage/>},
+      {path:'throttle', element:<ThrottlePage/>}
     ]
   }
 ];
@@ -41,7 +44,12 @@ const protectedRoutes:RouteObject[]=[
     {
       path:'lp/:lpId',
       element:<LpPage/>
-    }
+    },
+    {
+      path:'search',
+      element:<SearchPage/>
+    },
+    
   ]
   }
 ]
