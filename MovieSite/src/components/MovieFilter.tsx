@@ -3,6 +3,7 @@ import type { MovieFilters, MovieLanguage } from "../types/movie"
 import { Input } from "./Input";
 import settingIcon from "../assets/images/Setting.png";
 import languageIcon from "../assets/images/Language.png";
+import searchIcon from "../assets/images/Search.svg";
 import { SelectBox } from "./SelectorBox";
 import LanguageSelector from "./LanguageSelector";
 import { LANGUAGE_OPTIONS } from "../constants/movie";
@@ -26,18 +27,29 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
   };
 
   return (
-    <div className="transform space-y-6 rounded-2xl border-gray-300 bg-white
+    <div className="flex transform space-y-6 rounded-2xl border-gray-300 bg-white
     p-6 shadow-xl transition-all hover:shadow-2xl">
       <div className="flex flex-wrap gap-6">
         <div className="min-w-[450px] flex-1">
-          <label className="mb-2 block text-sm font-medium text-gray-700">
-            영화 제목
+          <label className="mb-2 block text-lg font-medium flex item-center text-gray-700">
+            Movie Movie
           </label>
-          <Input value={query} onChange={setQuery} />
+          <div className="flex">
+            <Input value={query} onChange={setQuery} />
+            <div className="px-2">
+              <button onClick={handleSubmit}>
+                <img 
+                  src={searchIcon}
+                  alt="검색"
+                  className="w-10 h-10 p-2 mr-[2px] bg-blue-500 rounded-lg border border-gray-500"
+                />
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="min-w-[250px] flex-1">
-          <label className="mb-2 block text-md font-medium text-gray-700 flex items-center">
+          <label className="mt-8 block text-md font-medium text-gray-700 flex items-center">
             <img 
               src={settingIcon}
               alt="설정"
@@ -58,7 +70,7 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
 
         {/* 언어 선택 */}
         <div className="min-w-[250px] flex-1">
-          <label className="mb-2 block text-mb font-medium text-gray-700 flex items-center">
+          <label className="mt-8 block text-mb font-medium text-gray-700 flex items-center">
             <img 
               src={languageIcon}
               alt="언어"
@@ -75,11 +87,6 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
           shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <div className="pt-4">
-          <button onClick={handleSubmit}>
-            영화 검색
-          </button>
-        </div>
       </div>
     </div>
   );
