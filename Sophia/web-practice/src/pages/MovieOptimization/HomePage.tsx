@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import MovieFilter from '../../components/MovieOptimization/MovieFilter';
 import MovieList from '../../components/MovieOptimization/MovieList';
-import useFetch from '../../hooks/useFetch';
 import { MovieFilters, MovieResponse } from '../../types/movie';
+import useCustomFetch from '../../hooks/useCustomFetch';
 
 export default function HomePage() {
   const [filters, setFilters] = useState<MovieFilters>({
@@ -20,7 +20,7 @@ export default function HomePage() {
     [filters]
   );
 
-  const { data, error, isLoading } = useFetch<MovieResponse>('/search/movie', axiosRequestConfig);
+  const { data, error, isLoading } = useCustomFetch<MovieResponse>('/search/movie', axiosRequestConfig);
 
   // useCallback을 통해 함수를 캐싱하여 불필요한 리렌더링 방지
   // setFilters가 변경될 때만 MovieFilter 컴포넌트를 리렌더링

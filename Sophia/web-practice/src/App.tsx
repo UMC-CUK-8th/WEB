@@ -1,5 +1,8 @@
-import './App.css';
-// import { createBrowserRouter, RouteObject, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  // RouteObject,
+  RouterProvider,
+} from 'react-router-dom';
 // import { AuthProvider } from './context/AuthContext';
 // import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -7,6 +10,7 @@ import './App.css';
 
 // Movie Optimization
 import HomePage from './pages/MovieOptimization/HomePage';
+import MovieDetailPage from './pages/MovieOptimization/MovieDetailPage';
 
 // PlayList
 // import Navbar from './components/PlayList/Navbar';
@@ -106,6 +110,18 @@ import HomePage from './pages/MovieOptimization/HomePage';
 //   },
 // ]);
 
+// optimization Movie
+const MovieOptRouter = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomePage />,
+  },
+  {
+    path: '/:id',
+    element: <MovieDetailPage />,
+  },
+]);
+
 function App() {
   return (
     // Site
@@ -124,7 +140,7 @@ function App() {
     // </Provider>
 
     // Movie Optimization
-    <HomePage />
+    <RouterProvider router={MovieOptRouter} />
   );
 }
 
