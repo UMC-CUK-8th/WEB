@@ -13,7 +13,8 @@ import NowPlayingMoviesPage from './pages/now-playing';
 import TopRatedMoviesPage from './pages/top-rated';
 import UpComingMoviesPage from './pages/upcoming';
 import NotFound from './pages/not-found';
-import RootLayout from './layout/root-layout';
+import LPLayout from './layout/LPlayout';
+import MovieLayout from './layout/Movielayout';
 import MovieDetailPage from './pages/movieDetail';
 import OauthCallbackPage from './pages/oauthCallback';
 import MyPage from './pages/my';
@@ -21,32 +22,17 @@ import ProtectedRoute from './components/protectedRoute';
 import LPDetail from './pages/lpDetail';
 import SearchPage from './pages/search';
 import CartPage from './pages/cart';
+import MovieSearchResult from './pages/searchMovie';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout/>,
+    element: <LPLayout/>,
     errorElement: <NotFound/>,
     children: [
       {
         index: true,
         element: <HomePage/>
-      },
-      {
-        path: 'popular',
-        element: <PopularMoviesPage/>
-      },
-      {
-        path: 'now-playing',
-        element: <NowPlayingMoviesPage/>
-      },
-      {
-        path: 'top-rated',
-        element: <TopRatedMoviesPage/>
-      },
-      {
-        path: 'upcoming',
-        element: <UpComingMoviesPage/>
       },
       {
         path: 'signup',
@@ -59,10 +45,6 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <LoginPage/>
-      },
-      {
-        path: 'movies/:movieId',
-        element: <MovieDetailPage/>
       },
       {
         path: 'mypage',
@@ -82,6 +64,36 @@ const router = createBrowserRouter([
       }
     ]
   },
+  {
+    path: '/movies',
+    element: <MovieLayout/>,
+    children: [
+      {
+        path: 'popular',
+        element: <PopularMoviesPage/>
+      },
+      {
+        path: 'now-playing',
+        element: <NowPlayingMoviesPage/>
+      },
+      {
+        path: 'top-rated',
+        element: <TopRatedMoviesPage/>
+      },
+      {
+        path: 'upcoming',
+        element: <UpComingMoviesPage/>
+      },
+      {
+        path: 'movies/:movieId',
+        element: <MovieDetailPage/>
+      },
+      {
+        path: 'search',
+        element: <MovieSearchResult/>
+      }
+    ]
+  }
 ])
 
 function App() {

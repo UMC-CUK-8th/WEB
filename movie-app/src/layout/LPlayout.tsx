@@ -1,8 +1,8 @@
 import {Outlet} from "react-router-dom";
-import Navbar from "../components/navbar";
+import Navbar from "../components/LPnavbar";
 import { FloatingAddButton } from "../components/floatingAddButton";
 
-const RootLayout = () => {
+const LPLayout = () => {
     return (
         <>
             <Navbar/>
@@ -12,4 +12,4 @@ const RootLayout = () => {
     );
 };
 
-export default RootLayout;
+export default LPLayout;

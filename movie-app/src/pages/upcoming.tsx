@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFetchMovies } from "../hooks/useFetchMovies";
 import LoadingSpinner from "../components/loading";
 import Pagination from "../components/pagination";
-import MovieCard from "../components/movieCard";
+import MovieCard from "../components/MovieCard";
 
 const UpComingMoviesPage = () => {
     const [page, setPage] = useState(1);
