@@ -115,3 +115,11 @@ export type MovieVideos = {
   id: string;
   iso_3166_1: string;
 };
+
+export type MovieLanguage = 'ko-KR' | 'en-US' | 'ja-JP';
+
+export type MovieFilters = {
+  query: string;
+  include_adult: boolean;
+  language: MovieLanguage;
+};
